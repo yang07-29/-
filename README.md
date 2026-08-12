@@ -27,9 +27,11 @@
 
 ## Hot 100 算法迁移
 
-出现经典算法或数据结构的章节，会安排一题真正相关的 [LeetCode 热题 100](https://leetcode.cn/studyplan/top-100-liked/)。章内注明题号、中文题名、官方直达链接，并给出白话推导、复杂度、易错点和逐行中文注释的完整答案。
+出现经典算法或数据结构的章节，会安排真正相关的 [LeetCode 热题 100](https://leetcode.cn/studyplan/top-100-liked/)。目前共 24 题；章内注明题号、中文题名、官方直达链接，并给出白话推导、复杂度、易错点和逐行中文注释的完整答案。
 
-[打开章节—算法学习目标总表](docs/leetcode-hot100-learning-map.md)
+[打开 24 题章节—算法学习目标总表](docs/leetcode-hot100-learning-map.md) · [打开本次新增 16 题完整解析](docs/leetcode-hot100-expanded-practice.md)
+
+主动回忆与面试八股已按章全量审阅；题量从 282 增至 324，并采用“结论、机制、工程影响、误区、追问”的深答标准。[查看审阅记录与各章新增题数](docs/active-recall-interview-audit.md)
 
 ## 阅读方式
 
@@ -59,6 +61,7 @@ Hot 100 配套答案也能直接离线自测，例如：
 
 ```bash
 python code/ch06/hot100_sliding_window_maximum.py
+python code/ch10/hot100_top_k_frequent.py
 python code/ch11/jump_game.py
 python code/ch15/hot100_word_break.py
 ```

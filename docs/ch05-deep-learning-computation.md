@@ -553,6 +553,29 @@ python code/ch05/device_management.py
 CUDA 默认异步，未同步的计时常只测到 CPU 提交内核的时间；在测量边界调用 `torch.cuda.synchronize()`。`reserved` 含缓存分配器保留空间，不自动等于泄漏；应结合 `allocated` 是否随迭代增长、计算图和 Python 引用排查。
 </details>
 
+### 面试八股加练：不能只背结论
+
+<details>
+<summary>21. 【八股深答】Parameter、buffer 和普通 Tensor 属性到底怎样选？</summary>
+
+**结论：**需要优化器更新的状态用 Parameter；需随模型保存和迁移但不求梯度的状态注册为 buffer；临时缓存才用普通属性。**机制：**`nn.Module` 通过注册表决定 `parameters()`、`state_dict()` 与 `to(device)` 能看到什么。**工程影响：**漏注册的 Tensor 可能留在 CPU、不会进 checkpoint，形成隐蔽 device 或恢复错误。**误区：**`requires_grad=False` 的 Parameter 仍是 Parameter；普通 Tensor 也不会因为挂到 `self` 就自动成为 buffer。**追问：**BatchNorm 的 running mean/variance 是典型 buffer，而 γ、β 是 Parameter。
+
+</details>
+
+<details>
+<summary>22. 【八股深答】只保存 model.state_dict 为什么不能无缝续训？</summary>
+
+**结论：**它足够恢复推理参数，但通常不足以从完全相同的训练状态继续。**机制：**优化器还保存动量或二阶矩，调度器保存阶段，混合精度 scaler、epoch、随机数状态也会影响后续轨迹。**工程影响：**训练 checkpoint 应按需保存模型、优化器、调度器、scaler、进度与配置，并在新进程实际加载验证。**误区：**“文件能写出”不代表键匹配、设备正确或恢复结果一致。**追问：**严格复现还要恢复数据采样器与随机状态，但跨硬件仍可能存在非确定性。
+
+</details>
+
+<details>
+<summary>23. 【八股深答】为什么推荐调用 model(x)，而不是 model.forward(x)？</summary>
+
+**结论：**`model(x)` 进入 `nn.Module.__call__` 的完整调用链，再由它调用 forward。**机制：**这条链处理前后向 hook、混合精度或编译包装等框架行为；直接 forward 会绕过其中一部分。**工程影响：**训练、调试、特征抓取和分布式包装都应使用标准调用入口。**误区：**forward 不是不能定义，而是应该由框架入口触发；在 forward 内部调用子模块也写 `self.block(x)`。**追问：**若 hook 不触发，首先检查是否有人直接调用了 `.forward()`。
+
+</details>
+
 ## 复习闭环
 
 - 10 分钟：从“结构树 + 三类状态 + 生命周期”三张图重建全章。

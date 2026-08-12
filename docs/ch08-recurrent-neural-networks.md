@@ -665,6 +665,29 @@ python code/ch08/hot100_longest_substring.py
 
 ---
 
+### 面试八股加练：不能只背结论
+
+<details>
+<summary>17. 【八股深答】RNN 为什么能处理变长序列而参数量不随长度增长？</summary>
+
+**结论：**同一个状态转移单元在每个时间步复用同一组参数，序列变长只增加计算次数和中间状态，不增加参数副本。**机制：**$h_t=f(x_t,h_{t-1};\theta)$ 中 $\theta$ 对所有 $t$ 共享。**工程影响：**显存仍会因 BPTT 保存更多时间步激活而增长，训练长序列常需截断并 detach 状态。**误区：**“参数量不变”不等于计算量、显存或学习难度不变。**追问：**若每个时间步用不同参数，就失去时间共享，也很难泛化到训练长度之外。
+
+</details>
+
+<details>
+<summary>18. 【八股深答】detach 隐状态与把隐状态清零有什么区别？</summary>
+
+**结论：**detach 保留数值记忆但切断到旧计算图的梯度；清零同时丢掉数值记忆。**机制：**前者令下一批从旧 $h$ 的值继续，却把它当常量；后者相当于开始一条新序列。**工程影响：**连续语料分块训练常 detach，独立样本批次通常重置；选择错误会导致跨样本泄漏或“再次反向计算图”错误。**误区：**detach 不是关闭当前批梯度，当前批新建的状态转移仍可反向。**追问：**截断 BPTT 是优化近似，会舍弃跨截断边界的梯度依赖。
+
+</details>
+
+<details>
+<summary>19. 【八股深答】为什么单步预测误差很小，递归多步预测仍会崩？</summary>
+
+**结论：**递归预测把自己的输出当下一步输入，误差会改变后续输入分布并逐步累积。**机制：**训练常见的输入来自真实历史，而推理第 $t+1$ 步读到的是带误差的 $\hat x_t$；局部偏差可经动态系统放大。**工程影响：**必须分别报告 one-step 与 recursive horizon 指标，可考虑直接多步预测、scheduled sampling 或概率模型。**误区：**低一步 MSE 不能推出长时轨迹正确。**追问：**这与 seq2seq 的 exposure bias 同源，但时间序列还可能受系统稳定性影响。
+
+</details>
+
 ## 本章速查表
 
 | 问题 | 一句话答案 |
@@ -681,6 +704,10 @@ python code/ch08/hot100_longest_substring.py
 | 为什么多步预测更难？ | 自身误差会继续成为输入 |
 
 ---
+
+## Hot 100 加练（本章共 3 题）
+
+原有 #3 之外，新增 [#560 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/) 与 [#739 每日温度](https://leetcode.cn/problems/daily-temperatures/)，练前缀历史摘要与“尚未解决状态”的单调栈。解析见[新增题完整解析](leetcode-hot100-expanded-practice.md#第-8-章序列历史摘要)，代码见 [hot100_subarray_sum_equals_k.py](../code/ch08/hot100_subarray_sum_equals_k.py) 与 [hot100_daily_temperatures.py](../code/ch08/hot100_daily_temperatures.py)。
 
 ## 主动回忆：先遮住答案再作答
 

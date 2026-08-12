@@ -871,6 +871,29 @@ python code/ch09/hot100_kth_largest.py
 
 ---
 
+### 面试八股加练：不能只背结论
+
+<details>
+<summary>21. 【八股深答】GRU 与 LSTM 应怎样比较，不能只说谁参数少？</summary>
+
+**结论：**GRU 用更新门、重置门和单一隐藏状态，结构较简；LSTM 用输入、遗忘、输出门及独立细胞状态，控制更细。**机制：**两者都通过加性状态路径缓解普通 RNN 的长链乘积问题，但门控方程和可保存的信息不同。**工程影响：**GRU 通常参数和计算更少，LSTM 在部分长依赖任务更灵活；最终应在相同预算和验证集上比较。**误区：**不存在“LSTM 一定更准”或“GRU 已解决所有梯度消失”。**追问：**参数量比较必须基于相同输入维、隐藏维和层数推导。
+
+</details>
+
+<details>
+<summary>22. 【八股深答】teacher forcing 为什么造成 exposure bias？</summary>
+
+**结论：**训练时解码器读真实上一个 token，推理时却读自己的预测，两阶段输入分布不一致。**机制：**推理中一次错误会成为下一步条件并继续传播，而训练很少学到如何从自己的错误前缀恢复。**工程影响：**评估必须自回归生成，不能只看 teacher-forced loss；可尝试 scheduled sampling、序列级目标或更强搜索，但各有偏差。**误区：**把 teacher forcing 比例降到 0 不一定更好，训练可能更不稳定。**追问：**因果 mask 解决“偷看未来”，teacher forcing 解决输入构造，两者不是同一件事。
+
+</details>
+
+<details>
+<summary>23. 【八股深答】beam size 越大为什么不保证翻译越好？</summary>
+
+**结论：**更大的 beam 更充分地优化模型给出的序列分数，但模型分数本身不等于人工质量。**机制：**对数概率按长度累加会偏爱短句，模型还可能校准不佳或把高分给重复序列。**工程影响：**需正确复制每条候选状态，设置长度归一化、停止条件，并用任务指标和样例共同选 beam。**误区：**beam search 不是穷举；有限 beam 仍会剪枝，beam=1 才退化为贪心。**追问：**增大 beam 后句子变短时，先检查 EOS 分数与长度惩罚。
+
+</details>
+
 ## 本章速查表
 
 | 问题 | 一句话答案 |
@@ -889,6 +912,10 @@ python code/ch09/hot100_kth_largest.py
 | beam 越宽越好吗？ | 不一定，更慢且可能放大模型偏差 |
 
 ---
+
+## Hot 100 加练（本章共 3 题）
+
+原有 #215 之外，新增 [#1143 最长公共子序列](https://leetcode.cn/problems/longest-common-subsequence/) 与 [#72 编辑距离](https://leetcode.cn/problems/edit-distance/)，练双序列前缀状态和转移。解析见[新增题完整解析](leetcode-hot100-expanded-practice.md#第-9-章双序列状态转移)，代码见 [hot100_longest_common_subsequence.py](../code/ch09/hot100_longest_common_subsequence.py) 与 [hot100_edit_distance.py](../code/ch09/hot100_edit_distance.py)。
 
 ## 主动回忆：先遮住答案再作答
 

@@ -692,6 +692,29 @@ python code/ch13/number_of_islands.py
 
 同步几何增广 → mask 最近邻插值/long dtype → logits `(B,C,H,W)` → label `(B,H,W)` → loss → argmax → 每类 IoU/mIoU → 可视化边界。
 
+### 面试八股加练：不能只背结论
+
+<details>
+<summary>29. 【八股深答】IoU、置信度阈值和 NMS 阈值分别控制什么？</summary>
+
+**结论：**IoU 衡量框重叠；置信度阈值先过滤低分预测；NMS 阈值决定高分框会压制多大重叠的同类框。**机制：**NMS 按分数选框，再删除与其 IoU 超阈值的候选。**工程影响：**NMS 阈值太低会误删相邻目标，太高会保留重复框；参数必须按验证集和任务密度调。**误区：**NMS 不参与学习普通模型参数，也不保证保留的框就是真目标。**追问：**Soft-NMS 不直接删除，而是衰减重叠候选分数。
+
+</details>
+
+<details>
+<summary>30. 【八股深答】转置卷积为什么不是普通卷积的数学逆运算？</summary>
+
+**结论：**它对应卷积线性算子的转置，可学习上采样，但一般不能唯一恢复卷积前输入。**机制：**步幅卷积会丢失信息，卷积矩阵通常非方阵或非满秩；转置只交换线性映射的输入输出方向。**工程影响：**输出 Shape 由 stride、padding、kernel 和 output_padding 决定，棋盘格伪影需通过核步幅设计或插值加卷积缓解。**误区：**Shape 恢复相同不代表像素信息被逆回。**追问：**反向传播求输入梯度时出现转置算子，是其名称来源之一。
+
+</details>
+
+<details>
+<summary>31. 【八股深答】语义分割与目标检测的输出和损失有何根本区别？</summary>
+
+**结论：**分割为每个像素预测类别；检测预测数量可变的框、类别与置信度。**机制：**分割 logits 常为 `(B,C,H,W)` 并逐像素交叉熵，检测还需锚框/查询匹配、分类与框回归损失。**工程影响：**指标分别常看 mIoU 与 mAP，标签预处理和增广必须同步处理 mask 或框。**误区：**高像素准确率在背景占比很大时可能没有意义。**追问：**实例分割还要区分同类别的不同对象，输出结构比语义分割更复杂。
+
+</details>
+
 ## 一页速查
 
 | 概念 | 最值得先恢复的结论 |
@@ -710,6 +733,10 @@ python code/ch13/number_of_islands.py
 | FCN | 1×1 卷积变类别通道，再恢复空间分辨率 |
 | 风格迁移 | 冻结特征网，优化生成图像素；Gram 描述通道相关 |
 | 竞赛 | 分层验证、固定映射、禁止测试泄漏、严格提交格式 |
+
+## Hot 100 加练（本章共 3 题）
+
+原有 #200 之外，新增 [#994 腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/) 与 [#240 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)，练多源 BFS 和二维单调消元。解析见[新增题完整解析](leetcode-hot100-expanded-practice.md#第-13-章二维网格搜索)，代码见 [hot100_rotting_oranges.py](../code/ch13/hot100_rotting_oranges.py) 与 [hot100_search_2d_matrix_ii.py](../code/ch13/hot100_search_2d_matrix_ii.py)。
 
 ## 主动回忆：先遮住答案再作答
 

@@ -740,6 +740,29 @@ return True                           # 单元素数组的起点就是终点
 
 Momentum 通常每参数多一份状态；Adam 通常多两份 m/v，混合精度还可能保留主参数。显存规划不能只算模型权重和激活。
 
+### 面试八股加练：不能只背结论
+
+<details>
+<summary>26. 【八股深答】Momentum、RMSProp 与 Adam 分别在解决什么？</summary>
+
+**结论：**Momentum 平滑一阶梯度方向；RMSProp 用平方梯度移动平均做坐标自适应缩放；Adam 组合一阶动量与二阶矩缩放并做偏差修正。**机制：**前者积累速度，后两者让历史梯度大的坐标步长相对变小。**工程影响：**优化器状态需要显存并必须随 checkpoint 保存；超参数默认值不是所有任务最优。**误区：**Adam 的二阶矩不是 Hessian，也不能保证泛化优于 SGD。**追问：**AdamW 再把权重衰减从梯度预条件中解耦。
+
+</details>
+
+<details>
+<summary>27. 【八股深答】为什么 batch size 改变后常要重新考虑学习率？</summary>
+
+**结论：**batch 改变了梯度估计的方差、每个 epoch 的更新次数以及损失归约下的尺度。**机制：**较大 batch 的平均梯度噪声通常更小，但同样 epoch 内 step 更少；线性缩放只是特定条件下的经验起点。**工程影响：**同时记录有效 batch、梯度累积、学习率、warmup 和训练步数，并重新验证稳定性与泛化。**误区：**batch 翻倍不意味着学习率在所有优化器和任务上必须机械翻倍。**追问：**若 loss 用 sum 而非 mean，梯度还会直接随 batch 变化，需先统一归约口径。
+
+</details>
+
+<details>
+<summary>28. 【八股深答】学习率 warmup 为什么常见于大模型训练？</summary>
+
+**结论：**训练初期参数、激活和优化器矩估计尚未稳定，直接使用峰值学习率容易产生过大更新。**机制：**Adam 的矩估计虽有偏差修正，早期梯度分布仍可能剧烈变化；大 batch 和深层残差也会放大风险。**工程影响：**按 step 明确 warmup 长度和后续调度，恢复训练时必须恢复 scheduler 进度。**误区：**warmup 不是修复错误数据、爆炸损失或不合理峰值学习率的万能补丁。**追问：**scheduler.step 的调用频率必须与设计单位一致，是按 batch 还是按 epoch 不能混淆。
+
+</details>
+
 ## 一页速查
 
 | 问题 | 一句话答案 |
@@ -761,6 +784,10 @@ Momentum 通常每参数多一份状态；Adam 通常多两份 m/v，混合精�
 | 贪心等于梯度下降吗？ | 不等于，问题、状态和正确性依据都不同 |
 
 ---
+
+## Hot 100 加练（本章共 3 题）
+
+原有 #55 之外，新增 [#45 跳跃游戏 II](https://leetcode.cn/problems/jump-game-ii/) 与 [#121 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)，要求能说出分层边界和最小前缀两个贪心不变量。解析见[新增题完整解析](leetcode-hot100-expanded-practice.md#第-11-章可证明的贪心状态)，代码见 [hot100_jump_game_ii.py](../code/ch11/hot100_jump_game_ii.py) 与 [hot100_best_time_stock.py](../code/ch11/hot100_best_time_stock.py)。
 
 ## 主动回忆：先遮住答案再作答
 
