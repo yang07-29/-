@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <title id="title">MLM 与 NSP 联合更新</title><desc id="desc">MLM 一点八加 NSP 零点六得到总损失二点四，两路梯度汇入共享编码器。</desc><rect width="920" height="360" rx="18" fill="#f8fafc"/>
+  <text x="36" y="48" font-family="Microsoft YaHei,Arial,sans-serif" font-size="24" font-weight="700" fill="#0f172a">14.10 两个任务，共用一套 Transformer</text>
+  <rect x="60" y="92" width="210" height="80" rx="13" fill="#e0f2fe"/><text x="89" y="126" font-family="Microsoft YaHei,Arial,sans-serif" font-size="16" font-weight="700" fill="#075985">MLM 词元恢复</text><text x="112" y="154" font-family="Arial,sans-serif" font-size="17" fill="#0f172a">L = 1.8</text>
+  <rect x="60" y="210" width="210" height="80" rx="13" fill="#ede9fe"/><text x="89" y="244" font-family="Microsoft YaHei,Arial,sans-serif" font-size="16" font-weight="700" fill="#5b21b6">NSP 句子关系</text><text x="112" y="272" font-family="Arial,sans-serif" font-size="17" fill="#0f172a">L = 0.6</text>
+  <rect x="360" y="132" width="210" height="120" rx="14" fill="#fef3c7"/><text x="405" y="173" font-family="Microsoft YaHei,Arial,sans-serif" font-size="17" font-weight="700" fill="#92400e">总损失</text><text x="407" y="216" font-family="Arial,sans-serif" font-size="23" fill="#0f172a">1.8+0.6=2.4</text>
+  <rect x="660" y="118" width="210" height="150" rx="14" fill="#dcfce7"/><text x="691" y="158" font-family="Microsoft YaHei,Arial,sans-serif" font-size="17" font-weight="700" fill="#166534">共享编码器</text><text x="690" y="201" font-family="Microsoft YaHei,Arial,sans-serif" font-size="16" fill="#0f172a">两路梯度相加</text><text x="690" y="235" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" fill="#334155">一次 backward</text>
+  <path d="M270 132C320 132 320 168 352 175M270 250C320 250 320 218 352 210M570 192H652" fill="none" stroke="#64748b" stroke-width="3"/><path d="M645 184l10 8-10 8" fill="none" stroke="#64748b" stroke-width="3"/>
+</svg>

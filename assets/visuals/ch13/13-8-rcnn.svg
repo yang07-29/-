@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="280" viewBox="0 0 900 280">
+  <rect width="900" height="280" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：一张图先共享特征，再处理 2 个候选区域</text>
+  <rect x="40" y="85" width="170" height="105" rx="8" fill="#eef2ff" stroke="#6366f1"/><text x="75" y="130" font-size="18" font-family="sans-serif">整图卷积特征</text><text x="90" y="160" font-size="16" font-family="sans-serif">只计算一次</text>
+  <text x="230" y="145" font-size="28" font-family="sans-serif">→</text>
+  <rect x="280" y="65" width="180" height="70" rx="8" fill="#dbeafe" stroke="#3b82f6"/><text x="315" y="107" font-size="18" font-family="sans-serif">候选框 A</text>
+  <rect x="280" y="155" width="180" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="315" y="197" font-size="18" font-family="sans-serif">候选框 B</text>
+  <text x="480" y="145" font-size="28" font-family="sans-serif">→</text>
+  <rect x="530" y="85" width="180" height="105" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="560" y="125" font-size="18" font-family="sans-serif">RoI 对齐定长</text><text x="565" y="160" font-size="18" font-family="sans-serif">例如 7×7</text>
+  <text x="730" y="145" font-size="28" font-family="sans-serif">→ 分类+框</text>
+  <text x="40" y="250" font-size="16" font-family="sans-serif" fill="#4b5563">Fast/Faster R-CNN 的关键是共享整图卷积；Faster 再让 RPN 学会提候选。</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">一维梯度下降可算步骤</title><desc id="desc">对f等于x平方，从x等于4以学习率0.1更新到3.2。</desc><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.3 梯度下降：沿当前最陡上坡的反方向走</text>
+  <path d="M120 270Q450 10 780 270" fill="none" stroke="#60a5fa" stroke-width="5"/><line x1="450" y1="290" x2="450" y2="80" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 6"/>
+  <circle cx="690" cy="190" r="12" fill="#ef4444"/><circle cx="642" cy="219" r="12" fill="#16a34a"/><path d="M680 198L654 213" stroke="#475569" stroke-width="4"/><text x="700" y="168" font-size="18" fill="#991b1b">x=4，g=8</text><text x="655" y="252" font-size="18" fill="#14532d">x'=4-0.1×8=3.2</text>
+  <rect x="105" y="90" width="275" height="80" rx="14" fill="#fef3c7"/><text x="242" y="123" text-anchor="middle" font-size="19" fill="#78350f">f(x)=x²，f'(x)=2x</text><text x="242" y="151" text-anchor="middle" font-size="17" fill="#334155">学习率 η 决定一步有多远</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <title id="title">二维余弦相似度</title><desc id="desc">查询向量朝右，A 同方向余弦一，B 四十五度约零点七零七，C 反方向负一。</desc><rect width="920" height="360" rx="18" fill="#f8fafc"/>
+  <text x="36" y="48" font-family="Microsoft YaHei,Arial,sans-serif" font-size="24" font-weight="700" fill="#0f172a">14.7 余弦看方向，不看箭头有多长</text>
+  <line x1="90" y1="285" x2="520" y2="285" stroke="#94a3b8" stroke-width="2"/><line x1="135" y1="315" x2="135" y2="90" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M135 285L300 285" stroke="#0284c7" stroke-width="5"/><path d="M288 276l15 9-15 9" fill="#0284c7"/><text x="215" y="318" font-family="Arial,sans-serif" font-size="17" fill="#0369a1">q=(1,0)</text>
+  <path d="M135 285L450 285" stroke="#16a34a" stroke-width="4"/><path d="M438 276l15 9-15 9" fill="#16a34a"/><text x="390" y="268" font-family="Arial,sans-serif" font-size="17" fill="#166534">A=(2,0)</text>
+  <path d="M135 285L285 135" stroke="#7c3aed" stroke-width="4"/><path d="M270 139l18-7-7 18" fill="#7c3aed"/><text x="270" y="116" font-family="Arial,sans-serif" font-size="17" fill="#5b21b6">B=(1,1)</text>
+  <path d="M135 285L65 285" stroke="#dc2626" stroke-width="4"/><path d="M77 276l-15 9 15 9" fill="#dc2626"/>
+  <rect x="575" y="91" width="300" height="205" rx="14" fill="#fff" stroke="#cbd5e1"/><text x="600" y="132" font-family="Microsoft YaHei,Arial,sans-serif" font-size="17" font-weight="700" fill="#0f172a">与 q 的余弦</text><text x="600" y="176" font-family="Arial,sans-serif" font-size="18" fill="#166534">cos(q,A)=1.000</text><text x="600" y="214" font-family="Arial,sans-serif" font-size="18" fill="#5b21b6">cos(q,B)=0.707</text><text x="600" y="252" font-family="Arial,sans-serif" font-size="18" fill="#991b1b">cos(q,C)=-1.000</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">一亿参数模型的显存账本</title>
+  <desc id="desc">FP32参数、梯度和Adam两份状态合计约1.6GB，尚未包含激活和运行时开销。</desc>
+  <style>
+    text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.t{font-size:18px}.s{font-size:16px;fill:#4b5563}.num{font-size:22px;font-weight:700}
+    .p{fill:#dbeafe}.g{fill:#dcfce7}.m{fill:#fef3c7}.a{fill:#fce7f3}.box{stroke:#64748b;stroke-width:1.5;rx:10}.warn{fill:#fff7ed;stroke:#f97316;stroke-width:2;rx:12}
+  </style>
+  <text x="42" y="44" class="h">先算装不装得下，再比较跑得快不快</text>
+  <text x="42" y="84" class="t">例：1 亿参数，FP32（每个数 4 字节），使用 Adam</text>
+  <rect x="42" y="112" width="190" height="88" class="p box"/><text x="68" y="146" class="t">参数</text><text x="68" y="178" class="num">0.4 GB</text>
+  <rect x="242" y="112" width="190" height="88" class="g box"/><text x="268" y="146" class="t">梯度</text><text x="268" y="178" class="num">0.4 GB</text>
+  <rect x="442" y="112" width="230" height="88" class="m box"/><text x="468" y="146" class="t">Adam 两份状态</text><text x="468" y="178" class="num">0.8 GB</text>
+  <rect x="682" y="112" width="234" height="88" class="a box"/><text x="708" y="146" class="t">小计</text><text x="708" y="178" class="num">1.6 GB</text>
+  <rect x="42" y="236" width="874" height="72" class="warn"/><text x="68" y="266" class="t">还没算：中间激活、临时张量、算子工作区、数据批次</text><text x="68" y="293" class="s">所以“1.6 GB 小于显存容量”只是必要条件，不是一定能训练的保证。</text>
+  <text x="42" y="342" class="s">换算采用十进制 GB，真实工具可能显示 GiB；比较时要统一单位。</text>
+</svg>

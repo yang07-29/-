@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="270" viewBox="0 0 900 270">
+  <rect width="900" height="270" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：预训练特征层 + 新任务分类头</text>
+  <rect x="45" y="75" width="270" height="105" rx="8" fill="#dbeafe" stroke="#3b82f6"/><text x="70" y="110" font-size="18" font-family="sans-serif">features：已学边缘/纹理</text><text x="70" y="145" font-size="18" font-family="sans-serif">小学习率 0.001</text>
+  <text x="335" y="135" font-size="28" font-family="sans-serif">→</text>
+  <rect x="385" y="75" width="250" height="105" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="410" y="110" font-size="18" font-family="sans-serif">新分类头：随机初始化</text><text x="410" y="145" font-size="18" font-family="sans-serif">大学习率 0.01</text>
+  <text x="655" y="135" font-size="28" font-family="sans-serif">→</text>
+  <rect x="705" y="75" width="150" height="105" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="735" y="125" font-size="18" font-family="sans-serif">目标类别</text>
+  <text x="45" y="225" font-size="16" font-family="sans-serif" fill="#4b5563">先复用通用视觉知识，再让新头更快适应；不是把所有层都锁死。</text>
+</svg>

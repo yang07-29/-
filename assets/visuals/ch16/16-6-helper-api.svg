@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">从d2l辅助函数回到PyTorch原语</title>
+  <desc id="desc">先查看辅助函数的输入输出和源码，再把它映射到Dataset、DataLoader和训练循环。</desc>
+  <style>
+    text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.t{font-size:18px}.s{font-size:16px;fill:#4b5563}.card{fill:#eff6ff;stroke:#3b82f6;stroke-width:2;rx:14}.raw{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:14}.line{stroke:#64748b;stroke-width:3;marker-end:url(#a)}
+  </style><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker></defs>
+  <text x="42" y="44" class="h">会用辅助函数，不等于把它当黑盒</text>
+  <rect x="42" y="96" width="250" height="116" class="card"/><text x="68" y="132" class="t">d2l.load_array(...)</text><text x="68" y="164" class="s">输入：features、labels</text><text x="68" y="190" class="s">输出：批次迭代器</text>
+  <line x1="292" y1="154" x2="354" y2="154" class="line"/>
+  <rect x="358" y="96" width="250" height="116" class="raw"/><text x="384" y="132" class="t">TensorDataset</text><text x="384" y="164" class="s">按相同索引配对张量</text><text x="384" y="190" class="s">dataset[i] → (xᵢ, yᵢ)</text>
+  <line x1="608" y1="154" x2="670" y2="154" class="line"/>
+  <rect x="674" y="96" width="242" height="116" class="raw"/><text x="700" y="132" class="t">DataLoader</text><text x="700" y="164" class="s">batch_size / shuffle</text><text x="700" y="190" class="s">迭代得到 (X, y)</text>
+  <text x="42" y="264" class="t">掌握标准：能说出参数、返回值、Shape、副作用，并能用原生 PyTorch 写出等价版本。</text>
+  <text x="42" y="310" class="s">辅助函数用于减少样板代码；理解原语用于排错、迁移和升级。</text>
+</svg>

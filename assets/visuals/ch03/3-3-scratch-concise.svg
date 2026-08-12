@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">手写实现与PyTorch封装一一对应</title><desc id="d">数据、线性层、损失和更新的手写组件分别对应DataLoader、Linear、MSELoss和SGD。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:17px}.s{font-size:15px;fill:#475569}.l{fill:#fff7ed;stroke:#f97316;stroke-width:2;rx:10}.r{fill:#eff6ff;stroke:#3b82f6;stroke-width:2;rx:10}.a{stroke:#64748b;stroke-width:2;marker-end:url(#m)}</style><defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="40" class="h">封装换了写法，没有换掉训练机制</text>
+  <text x="120" y="76" class="x">手写</text><text x="704" y="76" class="x">PyTorch 封装</text>
+  <rect x="40" y="92" width="230" height="38" class="l"/><text x="60" y="117" class="s">data_iter</text><line x1="270" y1="111" x2="680" y2="111" class="a"/><rect x="686" y="92" width="234" height="38" class="r"/><text x="706" y="117" class="s">Dataset + DataLoader</text>
+  <rect x="40" y="142" width="230" height="38" class="l"/><text x="60" y="167" class="s">X @ w + b</text><line x1="270" y1="161" x2="680" y2="161" class="a"/><rect x="686" y="142" width="234" height="38" class="r"/><text x="706" y="167" class="s">nn.Linear</text>
+  <rect x="40" y="192" width="230" height="38" class="l"/><text x="60" y="217" class="s">squared_loss</text><line x1="270" y1="211" x2="680" y2="211" class="a"/><rect x="686" y="192" width="234" height="38" class="r"/><text x="706" y="217" class="s">nn.MSELoss</text>
+  <rect x="40" y="242" width="230" height="38" class="l"/><text x="60" y="267" class="s">manual_sgd</text><line x1="270" y1="261" x2="680" y2="261" class="a"/><rect x="686" y="242" width="234" height="38" class="r"/><text x="706" y="267" class="s">torch.optim.SGD</text>
+</svg>

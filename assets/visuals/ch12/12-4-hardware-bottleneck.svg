@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="290" viewBox="0 0 900 290">
+  <rect width="900" height="290" fill="#ffffff"/>
+  <text x="30" y="38" font-size="24" font-family="sans-serif" fill="#111827">例：1,000 个 float32 做向量加法</text>
+  <rect x="35" y="70" width="240" height="90" rx="8" fill="#eef2ff" stroke="#6366f1"/>
+  <text x="55" y="103" font-size="17" font-family="sans-serif">读取 x：4,000 B</text><text x="55" y="130" font-size="17" font-family="sans-serif">读取 y：4,000 B</text>
+  <text x="295" y="120" font-size="28" font-family="sans-serif">→</text>
+  <rect x="335" y="70" width="210" height="90" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="355" y="105" font-size="17" font-family="sans-serif">计算：1,000 次加法</text><text x="355" y="133" font-size="17" font-family="sans-serif">≈ 1,000 FLOPs</text>
+  <text x="565" y="120" font-size="28" font-family="sans-serif">→</text>
+  <rect x="605" y="70" width="240" height="90" rx="8" fill="#fff7ed" stroke="#f97316"/>
+  <text x="625" y="105" font-size="17" font-family="sans-serif">写回 z：4,000 B</text><text x="625" y="133" font-size="17" font-family="sans-serif">总搬运约 12,000 B</text>
+  <text x="35" y="210" font-size="18" font-family="sans-serif">算术强度 ≈ 1,000 / 12,000 = 0.083 FLOPs/byte → 常受带宽限制</text>
+  <text x="35" y="250" font-size="16" font-family="sans-serif" fill="#4b5563">GPU 算力很高不代表这段程序快；数据喂不进去时，计算单元只能等。</text>
+</svg>

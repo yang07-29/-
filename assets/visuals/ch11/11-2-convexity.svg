@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">凸函数弦线判据</title><desc id="desc">两点之间的函数曲线不高于连接两点的弦线。</desc><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.2 凸性：两点连线压在函数上方</text>
+  <line x1="90" y1="300" x2="830" y2="300" stroke="#64748b" stroke-width="3"/><line x1="100" y1="310" x2="100" y2="80" stroke="#64748b" stroke-width="3"/>
+  <path d="M180 100Q450 410 720 100" fill="none" stroke="#2563eb" stroke-width="5"/><line x1="180" y1="100" x2="720" y2="100" stroke="#ef4444" stroke-width="4" stroke-dasharray="10 8"/><circle cx="180" cy="100" r="8" fill="#ef4444"/><circle cx="720" cy="100" r="8" fill="#ef4444"/><circle cx="450" cy="235" r="9" fill="#2563eb"/>
+  <text x="450" y="86" text-anchor="middle" font-size="18" fill="#991b1b">弦上中点：½f(x)+½f(y)</text><text x="450" y="267" text-anchor="middle" font-size="18" fill="#1e3a8a">函数中点：f((x+y)/2)</text><text x="450" y="335" text-anchor="middle" font-size="18" fill="#475569">凸函数：蓝点不高于红线；局部最小点也是全局最小点</text>
+</svg>

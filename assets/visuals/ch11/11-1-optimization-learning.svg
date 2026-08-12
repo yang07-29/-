@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">训练目标与泛化目标</title><desc id="desc">优化器降低训练集损失，但真正目标是未知数据误差。</desc>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#475569"/></marker></defs><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.1 优化解决“怎么降训练损失”，学习关心“新题会不会”</text>
+  <rect x="70" y="115" width="230" height="120" rx="18" fill="#dbeafe"/><text x="185" y="153" text-anchor="middle" font-size="21" fill="#1e3a8a">训练损失</text><text x="185" y="187" text-anchor="middle" font-size="18" fill="#334155">100 道做过的题</text><text x="185" y="216" text-anchor="middle" font-size="17" fill="#334155">优化器可直接看到</text>
+  <rect x="600" y="115" width="230" height="120" rx="18" fill="#dcfce7"/><text x="715" y="153" text-anchor="middle" font-size="21" fill="#14532d">测试误差</text><text x="715" y="187" text-anchor="middle" font-size="18" fill="#334155">没见过的新题</text><text x="715" y="216" text-anchor="middle" font-size="17" fill="#334155">训练时不可直接优化</text>
+  <rect x="355" y="137" width="190" height="76" rx="14" fill="#fef3c7"/><text x="450" y="170" text-anchor="middle" font-size="20" fill="#78350f">模型 + 数据偏好</text><text x="450" y="197" text-anchor="middle" font-size="16" fill="#334155">决定能否泛化</text><path d="M300 175H340" stroke="#475569" stroke-width="3" marker-end="url(#a)"/><path d="M545 175H585" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+  <text x="450" y="300" text-anchor="middle" font-size="18" fill="#475569">训练损失更低 ≠ 测试误差必然更低</text>
+</svg>

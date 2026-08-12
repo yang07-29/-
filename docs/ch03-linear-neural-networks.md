@@ -149,6 +149,28 @@ flowchart TD
 
 图里最容易混淆的地方是：参数值和参数梯度是两份不同状态。`backward()` 更新的是 `.grad`，SGD 更新的才是参数值。
 
+### 新手例子：两套房为什么能一次算完
+
+设面积权重为 3，房龄权重为 -1，基础价格为 5。现在有两个样本：
+
+- 房屋 A：面积 2、房龄 1，预测为 $2\times3+1\times(-1)+5=10$；
+- 房屋 B：面积 4、房龄 3，预测为 $4\times3+3\times(-1)+5=14$。
+
+把它们写成批量矩阵：
+
+$$
+X=\begin{bmatrix}2&1\\4&3\end{bmatrix},\quad
+w=\begin{bmatrix}3\\-1\end{bmatrix},\quad b=5,
+$$
+
+则 $Xw+b=[10,14]^\mathsf T$，输出 Shape 为 <code>(2,1)</code>。矩阵乘法只是同时执行了两次相同规则，没有把两个样本混在一起。
+
+![两个房屋样本的线性回归手算](../assets/visuals/ch03/3-1-linear-house.svg)
+
+**这个例子说明了什么？** 每个特征先乘自己的权重，再加共享偏置；批量维只负责一次处理多个样本。
+
+**新手最容易误解什么？** <code>(2,1)</code> 表示 2 个样本各 1 个预测，不是一个样本有两个输出。标签也应保持相同 Shape，避免广播成两两比较。
+
 ---
 
 ## 3.2 线性回归：从零开始实现
@@ -257,6 +279,22 @@ parameter.grad = None
 - `no_grad`：控制是否记录新计算；
 - `grad = None`：清除已经算出来的旧梯度。
 
+### 新手例子：一个样本走完一次 SGD
+
+只看一个样本：<code>x=2</code>、真实值 <code>y=5</code>。初始参数 <code>w=1</code>、<code>b=0</code>，学习率为 0.1。
+
+1. 前向：$\hat y=2\times1+0=2$。
+2. 误差：$\hat y-y=2-5=-3$。
+3. 使用 $\frac12(\hat y-y)^2$ 时，$\partial L/\partial w=-3\times2=-6$，$\partial L/\partial b=-3$。
+4. 更新：$w=1-0.1\times(-6)=1.6$，$b=0-0.1\times(-3)=0.3$。
+5. 用新参数再预测：$2\times1.6+0.3=3.5$，比原来的 2 更接近 5。
+
+![线性回归的一次手写 SGD 更新](../assets/visuals/ch03/3-2-one-sgd-step.svg)
+
+**这个例子说明了什么？** 梯度的负号告诉我们提高 <code>w</code> 和 <code>b</code> 会让这次预测更接近答案；更新动作沿负梯度方向移动。
+
+**新手最容易误解什么？** <code>backward()</code> 结束时参数仍是 1 和 0，只是 <code>.grad</code> 里出现 -6 和 -3；手写更新后参数才改变。
+
 ---
 
 ## 3.3 线性回归：PyTorch 简洁实现
@@ -311,6 +349,21 @@ model.eval()
 with torch.inference_mode():
     predictions = model(features)
 ```
+
+### 新手例子：封装前后逐项对照
+
+同一批 <code>X:(4,2)</code> 和 <code>y:(4,1)</code>，手写版与简洁版做的事情完全对应：
+
+1. <code>data_iter</code> 手动选 4 行；<code>DataLoader</code> 返回同样的一个批次。
+2. <code>X @ w + b</code> 得到 <code>(4,1)</code>；<code>nn.Linear(2,1)</code> 也得到 <code>(4,1)</code>。
+3. 手写平方损失与 <code>nn.MSELoss</code> 都把预测和标签逐样本比较。
+4. 手写 <code>parameter -= lr * grad</code> 与 <code>optimizer.step()</code> 都在反向之后改变参数。
+
+![手写实现与 PyTorch 封装一一对应](../assets/visuals/ch03/3-3-scratch-concise.svg)
+
+**这个例子说明了什么？** 简洁实现省掉的是参数注册、分批和更新的样板代码，训练链路没有少一步。
+
+**新手最容易误解什么？** <code>optimizer.step()</code> 不会替你执行前向、计算损失或反向传播；它只读取已经存在的梯度。
 
 ---
 
@@ -412,6 +465,21 @@ prediction = logits.argmax(dim=1)
 
 与先 Softmax 再 `argmax` 的类别结果完全相同。只有需要展示概率、做置信度分析或阈值决策时，才需要显式计算概率。
 
+### 新手例子：三个分数怎样变成概率
+
+某个样本的 logits 是 <code>[2,1,0]</code>：
+
+1. 为稳定计算，三项都减最大值 2，得到 <code>[0,-1,-2]</code>；排序没有改变。
+2. 取指数，约为 <code>[1,0.368,0.135]</code>。
+3. 三项之和约为 1.503，分别除以它，得到概率 <code>[0.665,0.245,0.090]</code>。
+4. 若真实类别是 1，交叉熵约为 $-\log(0.245)=1.41$。
+
+![三个 logits 的 Softmax 手算](../assets/visuals/ch03/3-4-softmax-numbers.svg)
+
+**这个例子说明了什么？** Softmax 关心分数之间的相对差距；同减一个常数不改变结果，却能避免 <code>exp</code> 上溢。
+
+**新手最容易误解什么？** logits 可以是负数，也不需要和为 1。训练时 <code>CrossEntropyLoss</code> 要接收 logits，不要先手动 Softmax。
+
 ---
 
 ## 3.5 Fashion-MNIST：数据进入模型前发生了什么
@@ -427,6 +495,21 @@ Fashion-MNIST 的每张图是单通道 $28\times28$ 灰度图，共 10 类服饰
 - `shuffle=False` 不会改变最终整集准确率。
 
 标签必须是 `torch.long` 的类别索引，Shape 为 `(B,)`。使用 `CrossEntropyLoss` 时通常不要把标签手动转成 one-hot。
+
+### 新手例子：4 张图进模型后每一维代表什么
+
+设 DataLoader 返回 4 张灰度图：
+
+1. 原批次 <code>X.shape=(4,1,28,28)</code>：4 是样本数，1 是灰度通道，后两维是高宽。
+2. <code>Flatten</code> 只合并每个样本内部的 <code>1×28×28</code>，得到 <code>(4,784)</code>。
+3. <code>Linear(784,10)</code> 为每张图输出 10 个类别分数，得到 <code>(4,10)</code>。
+4. 标签 <code>y.shape=(4,)</code>，例如 <code>[9,0,3,3]</code>，每个整数对应一张图。
+
+![Fashion-MNIST 批次的 Shape 变化](../assets/visuals/ch03/3-5-fashion-batch.svg)
+
+**这个例子说明了什么？** 批量维从输入到输出一直是 4，模型没有把 4 张图拼成一张图。
+
+**新手最容易误解什么？** <code>Flatten</code> 应从第 1 维开始，不能把批量维也压掉；否则会得到一条长度 3136 的向量，样本边界消失。
 
 ---
 
@@ -469,6 +552,22 @@ true_logits = logits[row_index, targets]
 - 最后统一除以总样本数。
 
 不能直接把每批平均损失相加再除批次数，因为最后一批往往更小，每批等权会产生偏差。
+
+### 新手例子：三行 logits 怎样各取自己的真实类别
+
+假设三个样本的标签是 <code>[2,0,1]</code>。那么需要取的坐标是：
+
+- 样本 0：第 0 行第 2 列；
+- 样本 1：第 1 行第 0 列；
+- 样本 2：第 2 行第 1 列。
+
+若三行 logits 分别为 <code>[0.2,1.1,2.3]</code>、<code>[3.0,0.1,-0.5]</code>、<code>[0.7,1.8,0.4]</code>，则真实类别分数是 <code>[2.3,3.0,1.8]</code>。
+
+![按样本取真实类别 logit](../assets/visuals/ch03/3-6-paired-index.svg)
+
+**这个例子说明了什么？** 成对高级索引是在每一行选择不同的列，输出仍是一条长度为批量大小的向量。
+
+**新手最容易误解什么？** <code>logits[:, targets]</code> 会组合所有行和多个列，产生额外维度；它不是“每行按自己的标签取一个数”。
 
 ---
 
@@ -539,6 +638,22 @@ loss_fn = nn.CrossEntropyLoss(weight=class_weight)
 ```
 
 权重长度必须等于类别数，并与 logits 位于同一设备。权重不是越大越好：它表达“错过这个类别有多贵”，应结合训练集频率、业务代价和验证集结果确定。
+
+### 新手例子：五行训练代码分别改变什么
+
+以一个批次为单位逐行看状态：
+
+1. <code>logits = model(X)</code>：建立前向计算图，参数值不变。
+2. <code>loss = loss_fn(logits,y)</code>：图末端得到标量损失，参数值仍不变。
+3. <code>zero_grad()</code>：清除上一批梯度，不是清参数。
+4. <code>loss.backward()</code>：把本批梯度写入每个参数的 <code>.grad</code>，参数值仍不变。
+5. <code>optimizer.step()</code>：读取 <code>.grad</code>，此时参数才改变。
+
+![标准训练五步中的状态变化](../assets/visuals/ch03/3-7-training-state.svg)
+
+**这个例子说明了什么？** 训练循环里的每行职责单一；出错时可以逐步检查输出 Shape、损失、梯度和参数差值。
+
+**新手最容易误解什么？** <code>zero_grad()</code> 放在 <code>backward()</code> 之后会把刚算出的梯度清掉；它应在当前批反向之前执行。
 
 ---
 
@@ -754,3 +869,5 @@ targets = targets.to(device)
 - 独立运行两份完整程序，并根据输出定位常见问题。
 
 下一章会在这套训练骨架上加入隐藏层和激活函数，让模型从“只能画直线”升级为能够拟合非线性关系。
+
+[下一章：多层感知机](ch04-multilayer-perceptrons.md) · [返回总目录](../README.md)

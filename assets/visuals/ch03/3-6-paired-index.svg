@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">按样本取真实类别logit</title><desc id="d">三个样本分别从自身所在行选取目标类别列，得到长度为三的真实类别分数。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:17px}.s{font-size:15px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:10}.o{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:10}.hi{fill:#bbf7d0}</style>
+  <text x="40" y="40" class="h">成对索引：第 i 个样本，只取它自己标签所在的列</text>
+  <text x="40" y="79" class="x">targets = [2, 0, 1]</text>
+  <rect x="40" y="100" width="520" height="132" class="b"/>
+  <text x="70" y="132" class="s">样本 0</text><text x="190" y="132" class="x">0.2</text><text x="300" y="132" class="x">1.1</text><rect x="385" y="108" width="90" height="30" class="hi"/><text x="410" y="132" class="x">2.3</text>
+  <text x="70" y="174" class="s">样本 1</text><rect x="165" y="150" width="90" height="30" class="hi"/><text x="190" y="174" class="x">3.0</text><text x="300" y="174" class="x">0.1</text><text x="410" y="174" class="x">-0.5</text>
+  <text x="70" y="216" class="s">样本 2</text><text x="190" y="216" class="x">0.7</text><rect x="275" y="192" width="90" height="30" class="hi"/><text x="300" y="216" class="x">1.8</text><text x="410" y="216" class="x">0.4</text>
+  <text x="594" y="123" class="x">选择坐标：</text><text x="594" y="158" class="s">(0,2)、(1,0)、(2,1)</text><rect x="594" y="180" width="300" height="52" class="o"/><text x="620" y="213" class="x">true_logits = [2.3,3.0,1.8]</text>
+  <text x="40" y="270" class="x">不是“取第 2 列”，而是每一行按自己的标签选一列。</text>
+</svg>

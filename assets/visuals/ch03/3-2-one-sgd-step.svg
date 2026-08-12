@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">线性回归的一次手写SGD更新</title><desc id="d">从预测误差计算梯度，再以学习率0.1更新权重和偏置。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:17px}.s{font-size:15px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:12}.o{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:12}.a{stroke:#64748b;stroke-width:3;marker-end:url(#m)}</style><defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">一个样本走完 forward → loss → backward → update</text>
+  <rect x="38" y="88" width="190" height="105" class="b"/><text x="58" y="120" class="x">x=2，y=5</text><text x="58" y="151" class="s">w=1，b=0</text><text x="58" y="177" class="s">预测 2</text>
+  <line x1="228" y1="140" x2="270" y2="140" class="a"/><rect x="274" y="88" width="190" height="105" class="b"/><text x="294" y="120" class="x">误差：2-5=-3</text><text x="294" y="151" class="s">grad_w=-3×2=-6</text><text x="294" y="177" class="s">grad_b=-3</text>
+  <line x1="464" y1="140" x2="506" y2="140" class="a"/><rect x="510" y="88" width="190" height="105" class="b"/><text x="530" y="120" class="x">学习率 0.1</text><text x="530" y="151" class="s">w=1-0.1×(-6)=1.6</text><text x="530" y="177" class="s">b=0.3</text>
+  <line x1="700" y1="140" x2="742" y2="140" class="a"/><rect x="746" y="88" width="176" height="105" class="o"/><text x="766" y="120" class="x">新预测：3.5</text><text x="766" y="154" class="s">更接近真实值 5</text>
+  <text x="40" y="259" class="x">backward 只得到梯度；参数在 update 时才从 (1,0) 变成 (1.6,0.3)。</text>
+</svg>

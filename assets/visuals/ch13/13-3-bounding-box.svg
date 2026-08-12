@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="270" viewBox="0 0 900 270">
+  <rect width="900" height="270" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：图像 H=100、W=200，像素框 (50,20,150,80)</text>
+  <rect x="55" y="70" width="400" height="180" fill="#f9fafb" stroke="#6b7280"/><rect x="155" y="106" width="200" height="108" fill="#dbeafe" fill-opacity="0.5" stroke="#2563eb" stroke-width="3"/>
+  <text x="160" y="100" font-size="15" font-family="sans-serif">(50,20)</text><text x="315" y="235" font-size="15" font-family="sans-serif">(150,80)</text>
+  <text x="500" y="100" font-size="20" font-family="sans-serif">归一化：</text><text x="500" y="135" font-size="20" font-family="monospace">(0.25,0.20,0.75,0.80)</text>
+  <text x="500" y="180" font-size="18" font-family="sans-serif">中心式：</text><text x="500" y="215" font-size="20" font-family="monospace">(0.50,0.50,0.50,0.60)</text>
+</svg>

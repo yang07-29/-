@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">加性和缩放点积注意力</title><desc id="desc">比较加性评分和缩放点积评分，并显示遮蔽发生在softmax之前。</desc>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#475569"/></marker></defs>
+  <rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">10.3 评分函数：先打分，遮住无效键，再归一化</text>
+  <rect x="50" y="105" width="255" height="94" rx="16" fill="#dbeafe"/><text x="177" y="140" text-anchor="middle" font-size="20" fill="#1e3a8a">加性评分</text><text x="177" y="174" text-anchor="middle" font-size="17" fill="#334155">vᵀtanh(Wq q + Wk k)</text>
+  <rect x="50" y="225" width="255" height="84" rx="16" fill="#dcfce7"/><text x="177" y="260" text-anchor="middle" font-size="20" fill="#14532d">缩放点积</text><text x="177" y="290" text-anchor="middle" font-size="18" fill="#334155">qkᵀ / √d</text>
+  <rect x="380" y="145" width="180" height="90" rx="16" fill="#fee2e2"/><text x="470" y="180" text-anchor="middle" font-size="20" fill="#7f1d1d">掩蔽无效键</text><text x="470" y="211" text-anchor="middle" font-size="17" fill="#334155">分数 → 极小值</text>
+  <rect x="650" y="145" width="190" height="90" rx="16" fill="#ede9fe"/><text x="745" y="180" text-anchor="middle" font-size="20" fill="#4c1d95">softmax</text><text x="745" y="211" text-anchor="middle" font-size="17" fill="#334155">每个查询权重和 = 1</text>
+  <path d="M305 152H365" stroke="#475569" stroke-width="3" marker-end="url(#a)"/><path d="M305 267C340 267 340 225 365 215" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#a)"/><path d="M560 190H635" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+</svg>

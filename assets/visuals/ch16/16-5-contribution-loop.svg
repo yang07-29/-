@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">一次最小贡献闭环</title>
+  <desc id="desc">从复现问题、建立分支、最小修改、测试到提交拉取请求的完整流程。</desc>
+  <style>
+    text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.t{font-size:17px}.s{font-size:15px;fill:#4b5563}.card{fill:#f8fafc;stroke:#64748b;stroke-width:2;rx:12}.good{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:12}.line{stroke:#64748b;stroke-width:3;marker-end:url(#a)}
+  </style><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker></defs>
+  <text x="42" y="44" class="h">贡献的目标不是“改得多”，而是“别人能验证”</text>
+  <rect x="42" y="102" width="150" height="92" class="card"/><text x="61" y="136" class="t">1. 复现问题</text><text x="61" y="166" class="s">记录输入和现象</text>
+  <line x1="192" y1="148" x2="224" y2="148" class="line"/>
+  <rect x="228" y="102" width="150" height="92" class="card"/><text x="247" y="136" class="t">2. 建立分支</text><text x="247" y="166" class="s">只承载本次修改</text>
+  <line x1="378" y1="148" x2="410" y2="148" class="line"/>
+  <rect x="414" y="102" width="150" height="92" class="card"/><text x="433" y="136" class="t">3. 最小修改</text><text x="433" y="166" class="s">不夹带无关重构</text>
+  <line x1="564" y1="148" x2="596" y2="148" class="line"/>
+  <rect x="600" y="102" width="150" height="92" class="card"/><text x="619" y="136" class="t">4. 运行测试</text><text x="619" y="166" class="s">证明旧功能未坏</text>
+  <line x1="750" y1="148" x2="782" y2="148" class="line"/>
+  <rect x="786" y="102" width="130" height="92" class="good"/><text x="805" y="136" class="t">5. 提交 PR</text><text x="805" y="166" class="s">解释为何正确</text>
+  <rect x="138" y="246" width="684" height="62" class="good"/><text x="165" y="283" class="t">例：修正文档 Shape 错误，同时增加一个会在旧写法下失败的小测试。</text>
+</svg>

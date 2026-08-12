@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">自注意力与位置编码</title><desc id="desc">自注意力让词元互相读取，位置编码区分顺序。</desc>
+  <rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">10.6 自注意力：看全句；位置编码：记住先后</text>
+  <g font-size="19" text-anchor="middle"><rect x="55" y="130" width="130" height="65" rx="12" fill="#dbeafe"/><text x="120" y="169" fill="#1e3a8a">我</text><rect x="225" y="130" width="130" height="65" rx="12" fill="#dbeafe"/><text x="290" y="169" fill="#1e3a8a">爱</text><rect x="395" y="130" width="130" height="65" rx="12" fill="#dbeafe"/><text x="460" y="169" fill="#1e3a8a">学习</text></g>
+  <g stroke="#6366f1" fill="none" stroke-width="3"><path d="M120 125Q290 45 460 125"/><path d="M120 200Q290 285 460 200"/><path d="M185 162H225"/><path d="M355 162H395"/></g>
+  <rect x="625" y="95" width="220" height="145" rx="18" fill="#fef3c7"/><text x="735" y="133" text-anchor="middle" font-size="20" fill="#78350f">输入表示</text><text x="735" y="170" text-anchor="middle" font-size="18" fill="#334155">词嵌入 + 位置向量</text><text x="735" y="205" text-anchor="middle" font-size="17" fill="#334155">(B,T,D) + (1,T,D)</text>
+  <text x="290" y="320" text-anchor="middle" font-size="17" fill="#475569">Q=K=V：每个位置都能汇聚其他位置；因果任务另加未来掩码</text>
+</svg>

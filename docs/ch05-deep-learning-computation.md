@@ -73,6 +73,16 @@ flowchart TD
 
 忘记时先查：有没有 `super().__init__()` → 层是否绑定为属性/放入 `ModuleList` → 是否调用 `model(X)` → `forward` 每条分支 Shape 是否可对齐。
 
+### 新手例子：一个两层块怎样被整棵树管理
+
+- **小输入**：模型是 `Sequential(Linear(3,4), ReLU(), Linear(4,1))`，输入 `X.shape=(2,3)`。
+- **逐步过程**：第一层把 `(2,3)` 变成 `(2,4)`，ReLU 不改 Shape，第二层得到 `(2,1)`；两层 Linear 分别注册 weight/bias，参数量为 `3×4+4+4×1+1=21`。调用 `parameters()`、`to(device)`、`eval()` 或 `state_dict()` 时，Module 沿注册树递归处理它们。
+- **输出**：前向输出 Shape 为 `(2,1)`，模型能列出 4 个 Parameter 张量、共 21 个标量。
+- **说明什么**：`forward` 只描述这批数据怎样走；注册树负责长期管理层和状态，两部分共同构成模型。
+- **最容易误解什么**：把 `Linear` 临时写在 `forward` 里虽然也能算出 `(2,1)`，但每次都会新建参数，优化器无法持续训练同一组权重。
+
+![两层 Module 的注册树与 Shape](../assets/visuals/ch05/5-1-module-tree.svg)
+
 ---
 
 ## 5.2 参数管理：注册、求导、优化、保存是四回事
@@ -131,6 +141,16 @@ $$
 
 忘记时先查：`named_parameters` 有它吗 → `requires_grad` 是否为真 → 优化器参数组包含它吗 → 反传后 `.grad` 是否存在 → 是否意外共享同一对象。
 
+### 新手例子：三个张量参与同一前向，却有三种命运
+
+- **小输入**：输入 `x=4`；可训练 `Parameter w=2`，持久 `buffer scale=3`，普通张量属性 `offset=1`；前向为 `y=x×w×scale+offset`。
+- **逐步过程**：前向得到 `4×2×3+1`；若直接对 `y` 反传，`w.grad=x×scale=12`。`w` 会出现在 `parameters()` 和 `state_dict()`，`scale` 只在 `buffers()`/`state_dict()`，普通 `offset` 默认三处都没有。
+- **输出**：`y=25、w.grad=12`；优化器只会更新 `w`，`model.to(device)` 会迁移 `w` 和 `scale`，不会自动迁移普通 `offset`。
+- **说明什么**：是否参与数值计算，和是否求导、保存、迁移、优化是不同问题，必须分别登记。
+- **最容易误解什么**：`requires_grad=True` 的普通张量不自动变成模型 Parameter；优化器也不会仅凭它有梯度就发现它。
+
+![Parameter、buffer 与普通张量的生命周期](../assets/visuals/ch05/5-2-state-registration.svg)
+
 ---
 
 ## 5.3 延后初始化：不知道输入维度时，参数何时才真正存在
@@ -173,6 +193,16 @@ stateDiagram-v2
 
 Lazy 只推断一次，不是“每批自动适应任意维度”。在编译、分布式包装、模型导出等生命周期更严格的流程中，更应先实体化再进入后续工具。
 
+### 新手例子：`LazyLinear(4)` 第一次看见三维输入
+
+- **小输入**：刚构造 `nn.LazyLinear(4)` 时只知道输出宽度 4；第一次送入 `X.shape=(2,3)`。
+- **逐步过程**：模块从输入最后一维读出 `in_features=3`，实体化 `weight.shape=(4,3)` 和 `bias.shape=(4,)`，随后完成线性运算。
+- **输出**：首次输出为 `(2,4)`；以后再给 `(5,3)` 合法，但给 `(2,5)` 会因矩阵内维不匹配而报错。
+- **说明什么**：Lazy 延迟的是一次性的 Shape 决策，不是让同一层在每个 batch 改尺寸。
+- **最容易误解什么**：首次 forward 后立刻原地重初始化参数，却继续拿旧 forward 的 loss 做 backward；正确做法是初始化后重新 forward。
+
+![LazyLinear 首次前向的实体化过程](../assets/visuals/ch05/5-3-lazy-materialization.svg)
+
 ---
 
 ## 5.4 自定义层：大多数时候只写 `forward`
@@ -201,7 +231,7 @@ $$
 
 $$
 \mathbf Y_{B\times D}
-=\mathbf X_{B\times D}\odot\boldsymbol\gamma_D+oldsymbol\beta_D.
+=\mathbf X_{B\times D}\odot\boldsymbol\gamma_D+\boldsymbol\beta_D.
 $$
 
 `gamma(D,)` 会沿批量维广播，这是想要的。但错误 Shape 也可能合法广播，所以自定义层应显式检查最后一维。回归中 `(B,1)-(B,) -> (B,B)` 是最经典的静默错误；`keepdim=True` 和 Shape 断言不是多余装饰，而是语义保护。
@@ -218,6 +248,16 @@ $$
 | persistence | `state_dict` 是否包含 Parameter 与 buffer |
 
 只有需要自定义底层算子或特殊梯度规则时，才考虑 `torch.autograd.Function`。对普通组合层手写 backward，往往只是增加错误面。
+
+### 新手例子：逐行中心化层能否手算验证
+
+- **小输入**：`X=[[1,3],[2,6]]`，自定义层执行 `X-X.mean(dim=1, keepdim=True)`。
+- **逐步过程**：两行均值分别为 `2` 和 `4`，保留维度后是 `[[2],[4]]`，沿特征轴广播相减。
+- **输出**：`Y=[[-1,1],[-2,2]]`，Shape 仍为 `(2,2)`，每行均值严格为 0；全部运算可微，autograd 会自动把梯度传回输入。
+- **说明什么**：自定义层最先该用可手算张量验收数值、Shape 和广播轴，而不是直接丢进大网络看 loss。
+- **最容易误解什么**：若漏掉 `dim=1` 或 `keepdim=True`，代码可能报错，也可能沿错误轴合法广播；“能运行”不代表语义正确。
+
+![逐样本中心化层的小张量验算](../assets/visuals/ch05/5-4-centering-layer.svg)
 
 ---
 
@@ -263,6 +303,16 @@ Adam 的一阶、二阶矩不是可有可无的附件，它们决定下一步怎
 
 忘记时先查：结构配置是否一致 → `map_location` → 键与 Shape 报告 → 模式是否切到 `eval` → 固定输入输出是否一致 → 优化器状态是否恢复。
 
+### 新手例子：权重一样，下一步为什么仍可能不一样
+
+- **小输入**：保存时模型只有权重 `w=2`，动量优化器速度 `v=0.5`，训练进度 `epoch=3`；固定验收输入 `x=4`。
+- **逐步过程**：恢复模型权重后，固定输出应仍是 `xw=8`；若同时恢复 optimizer，速度仍为 `0.5`，可从 epoch 4 延续。若只加载 `w=2` 后新建优化器，速度会回到 0。
+- **输出**：两种恢复方式当前推理都给 `8`，但下一次带动量更新通常不同；完整 checkpoint 才能复现续训轨迹。
+- **说明什么**：固定输入一致验证模型数值，继续训练一步验证优化器历史，两项都通过才叫可靠恢复训练。
+- **最容易误解什么**：`state_dict` 加载无报错只说明键和 Shape 可接受，不说明预处理、模式、优化器或随机状态都已恢复。
+
+![完整 checkpoint 的保存与恢复验收](../assets/visuals/ch05/5-5-checkpoint-restore.svg)
+
 ---
 
 ## 5.6 GPU：关键不是写 `.cuda()`，而是保持设备一致
@@ -303,6 +353,16 @@ CUDA 默认异步：CPU 提交内核后可能立即继续，若直接读时钟�
 完整程序：[device_management.py](../code/ch05/device_management.py)。它在 CUDA 存在时使用 GPU，否则自动回退 CPU；一批数据经历 `(B,10) -> (B,24) -> (B,3)`，训练后把预测移回 CPU。
 
 GPU 不一定让小模型更快。小 batch、频繁 `.cpu()`/`.to()` 往返、输入管道慢和内核启动开销，都可能抵消并行收益。先用剖析和正确计时找瓶颈，再调批量、数据加载或混合精度。
+
+### 新手例子：只迁模型为什么还会报设备错误
+
+- **小输入**：`X.shape=(2,10)`、`y.shape=(2,)` 来自 CPU DataLoader，模型已执行 `model.to(device)`，输出类别数为 3。
+- **逐步过程**：训练前把 `X=X.to(device)`、`y=y.to(device)`；模型注册的参数与 buffer 已随 `.to()` 迁移，前向得到 `logits.shape=(2,3)`，loss、backward 和 step 都在同一设备完成；需要 NumPy 时再把预测 `.cpu()`。
+- **输出**：所有参与同一算子的张量设备一致时训练正常；若 `X` 仍在 CPU 而权重在 CUDA，会在第一层矩阵乘立刻报错。
+- **说明什么**：设备一致性是一次运算的整体约束，不是“模型已经在 GPU”这一句状态描述。
+- **最容易误解什么**：普通 Tensor 属性不会随 `model.to(device)` 迁移；长期常量应注册为 buffer，临时常量应在输入设备上创建。
+
+![模型、批量、标签与预测的设备流](../assets/visuals/ch05/5-6-device-flow.svg)
 
 ---
 
@@ -500,3 +560,5 @@ CUDA 默认异步，未同步的计时常只测到 CPU 提交内核的时间；�
 - 30 分钟：运行 Lazy 与自定义层程序，故意把输入最后一维改错，解释错误来自哪里。
 - 30 分钟：运行 checkpoint 程序，删掉 optimizer 状态后解释为什么只能“继续跑”而非“无缝续训”。
 - 次日与一周后：遮住答案完成 20 题，并从空白写出 CPU/GPU 自适应五步训练模板。
+
+[上一章：多层感知机](ch04-multilayer-perceptrons.md) · [下一章：卷积神经网络](ch06-convolutional-neural-networks.md) · [返回总目录](../README.md)

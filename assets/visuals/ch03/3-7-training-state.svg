@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">标准训练五步中的状态变化</title><desc id="d">前向和损失建立计算图，清梯度移除旧梯度，反向写入新梯度，优化器更新参数。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:16px}.s{font-size:14px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:10}.o{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:10}.a{stroke:#64748b;stroke-width:3;marker-end:url(#m)}</style><defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">五行代码分别改变计算图、梯度和参数</text>
+  <rect x="32" y="93" width="150" height="92" class="b"/><text x="52" y="124" class="x">1. forward</text><text x="52" y="153" class="s">建立图</text><text x="52" y="176" class="s">参数未变</text>
+  <line x1="182" y1="139" x2="210" y2="139" class="a"/><rect x="214" y="93" width="150" height="92" class="b"/><text x="234" y="124" class="x">2. loss</text><text x="234" y="153" class="s">得到标量</text><text x="234" y="176" class="s">参数未变</text>
+  <line x1="364" y1="139" x2="392" y2="139" class="a"/><rect x="396" y="93" width="150" height="92" class="b"/><text x="416" y="124" class="x">3. zero_grad</text><text x="416" y="153" class="s">清旧梯度</text><text x="416" y="176" class="s">参数未变</text>
+  <line x1="546" y1="139" x2="574" y2="139" class="a"/><rect x="578" y="93" width="150" height="92" class="b"/><text x="598" y="124" class="x">4. backward</text><text x="598" y="153" class="s">写入 .grad</text><text x="598" y="176" class="s">参数未变</text>
+  <line x1="728" y1="139" x2="756" y2="139" class="a"/><rect x="760" y="93" width="168" height="92" class="o"/><text x="780" y="124" class="x">5. step</text><text x="780" y="153" class="s">读取 .grad</text><text x="780" y="176" class="s">参数改变</text>
+  <text x="40" y="245" class="x">若先 step 再 backward，优化器读不到本批梯度；若不清梯度，下一批会累加旧值。</text>
+</svg>

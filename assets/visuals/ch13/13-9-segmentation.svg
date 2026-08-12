@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="280" viewBox="0 0 900 280">
+  <rect width="900" height="280" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：4×4 像素标签，0=背景、1=物体</text>
+  <g transform="translate(80,70)" stroke="#6b7280"><rect width="160" height="160" fill="#f9fafb"/><path d="M40 0V160M80 0V160M120 0V160M0 40H160M0 80H160M0 120H160"/><rect x="40" y="40" width="80" height="80" fill="#60a5fa"/></g>
+  <text x="275" y="155" font-size="28" font-family="sans-serif">→ 模型 →</text>
+  <g transform="translate(500,70)" stroke="#6b7280"><rect width="160" height="160" fill="#f9fafb"/><path d="M40 0V160M80 0V160M120 0V160M0 40H160M0 80H160M0 120H160"/><text x="15" y="28" font-size="18" font-family="sans-serif">0</text><text x="55" y="68" font-size="18" font-family="sans-serif">1</text><text x="95" y="108" font-size="18" font-family="sans-serif">1</text><text x="135" y="148" font-size="18" font-family="sans-serif">0</text></g>
+  <text x="700" y="125" font-size="18" font-family="sans-serif">输出 logits：</text><text x="700" y="160" font-size="19" font-family="monospace">(B,C,4,4)</text><text x="700" y="198" font-size="18" font-family="sans-serif">标签：(B,4,4)</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">两个房屋样本的线性回归手算</title><desc id="d">面积和房龄分别乘权重再加偏置，得到两个房价预测。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:18px}.s{font-size:16px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:12}.o{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:12}.a{stroke:#64748b;stroke-width:3;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">同一条规则，一次计算一批房屋</text>
+  <rect x="40" y="76" width="245" height="142" class="b"/><text x="62" y="110" class="x">样本 1：面积 2，房龄 1</text><text x="62" y="144" class="s">2×3 + 1×(-1) + 5</text><text x="62" y="182" class="x">预测：10</text>
+  <rect x="355" y="76" width="245" height="142" class="b"/><text x="377" y="110" class="x">样本 2：面积 4，房龄 3</text><text x="377" y="144" class="s">4×3 + 3×(-1) + 5</text><text x="377" y="182" class="x">预测：14</text>
+  <line x1="610" y1="147" x2="682" y2="147" class="a"/><rect x="690" y="94" width="230" height="106" class="o"/><text x="714" y="130" class="x">输出 Shape：(2,1)</text><text x="714" y="166" class="s">每个样本只对应一个预测</text>
+  <text x="40" y="267" class="x">权重 w=[3,-1]，偏置 b=5；批量计算不改变逐样本配对。</text>
+</svg>

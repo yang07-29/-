@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">三个logits的Softmax手算</title><desc id="d">将logits减最大值、指数化、归一化，得到三个类别概率。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:18px}.s{font-size:15px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:12}.o{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:12}.a{stroke:#64748b;stroke-width:3;marker-end:url(#m)}</style><defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">Softmax 把相对分数变成一行总和为 1 的概率</text>
+  <rect x="40" y="92" width="180" height="100" class="b"/><text x="62" y="127" class="x">logits</text><text x="62" y="164" class="x">[2, 1, 0]</text>
+  <line x1="220" y1="142" x2="274" y2="142" class="a"/><rect x="278" y="92" width="180" height="100" class="b"/><text x="300" y="127" class="x">减最大值 2</text><text x="300" y="164" class="x">[0, -1, -2]</text>
+  <line x1="458" y1="142" x2="512" y2="142" class="a"/><rect x="516" y="92" width="180" height="100" class="b"/><text x="538" y="127" class="x">取 exp</text><text x="538" y="164" class="x">[1,.368,.135]</text>
+  <line x1="696" y1="142" x2="750" y2="142" class="a"/><rect x="754" y="92" width="168" height="100" class="o"/><text x="776" y="127" class="x">除以 1.503</text><text x="776" y="164" class="x">[.665,.245,.090]</text>
+  <text x="40" y="249" class="x">最高分仍是类别 0；若真实类别是 1，交叉熵约为 -log(.245)=1.41。</text>
+</svg>

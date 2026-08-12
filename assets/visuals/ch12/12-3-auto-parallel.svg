@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="280" viewBox="0 0 900 280">
+  <rect width="900" height="280" fill="#ffffff"/>
+  <text x="30" y="38" font-size="24" font-family="sans-serif" fill="#111827">例：A 耗时 4 ms，B 耗时 6 ms，二者无依赖</text>
+  <text x="35" y="90" font-size="18" font-family="sans-serif">串行</text>
+  <rect x="130" y="65" width="200" height="42" fill="#dbeafe" stroke="#3b82f6"/><text x="210" y="92" font-size="16" font-family="sans-serif">A 4 ms</text>
+  <rect x="330" y="65" width="300" height="42" fill="#fef3c7" stroke="#f59e0b"/><text x="445" y="92" font-size="16" font-family="sans-serif">B 6 ms</text>
+  <text x="660" y="92" font-size="18" font-family="sans-serif">总计 10 ms</text>
+  <text x="35" y="165" font-size="18" font-family="sans-serif">并行</text>
+  <rect x="130" y="132" width="200" height="38" fill="#dbeafe" stroke="#3b82f6"/><text x="210" y="157" font-size="16" font-family="sans-serif">A 4 ms</text>
+  <rect x="130" y="177" width="300" height="38" fill="#fef3c7" stroke="#f59e0b"/><text x="245" y="202" font-size="16" font-family="sans-serif">B 6 ms</text>
+  <text x="465" y="185" font-size="18" font-family="sans-serif">理想总计 max(4,6)=6 ms</text>
+  <text x="35" y="255" font-size="16" font-family="sans-serif" fill="#4b5563">若 B 依赖 A 的输出，就不能重叠；并行还要支付调度与通信开销。</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="285" viewBox="0 0 900 285">
+  <rect width="900" height="285" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：4×4 特征图、每像素 3 框、2 个目标类</text>
+  <rect x="45" y="80" width="200" height="105" rx="8" fill="#eef2ff" stroke="#6366f1"/><text x="70" y="115" font-size="18" font-family="sans-serif">候选数 N=4×4×3</text><text x="115" y="153" font-size="26" font-family="sans-serif">=48</text>
+  <text x="270" y="140" font-size="28" font-family="sans-serif">→</text>
+  <rect x="320" y="65" width="240" height="70" rx="8" fill="#dbeafe" stroke="#3b82f6"/><text x="345" y="108" font-size="18" font-family="sans-serif">分类：(B,48,3)</text>
+  <rect x="320" y="155" width="240" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="345" y="198" font-size="18" font-family="sans-serif">框偏移：(B,48,4)</text>
+  <text x="600" y="115" font-size="18" font-family="sans-serif">3 类 = 背景 + 2 目标类</text><text x="600" y="165" font-size="18" font-family="sans-serif">训练：匹配→双损失</text><text x="600" y="205" font-size="18" font-family="sans-serif">推理：解码→阈值→NMS</text>
+</svg>

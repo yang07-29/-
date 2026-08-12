@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="270" viewBox="0 0 900 270">
+  <rect width="900" height="270" fill="#ffffff"/>
+  <text x="30" y="38" font-size="24" font-family="sans-serif" fill="#111827">例：一次 GPU 运算真正耗时 3.0 ms</text>
+  <text x="35" y="82" font-size="17" font-family="sans-serif">CPU 时间线</text>
+  <rect x="150" y="60" width="80" height="35" fill="#dbeafe" stroke="#3b82f6"/><text x="165" y="84" font-size="15" font-family="sans-serif">入队 0.1</text>
+  <rect x="230" y="60" width="520" height="35" fill="#f3f4f6" stroke="#9ca3af"/><text x="380" y="84" font-size="15" font-family="sans-serif">CPU 已继续；设备仍在算</text>
+  <text x="35" y="142" font-size="17" font-family="sans-serif">GPU 时间线</text>
+  <rect x="150" y="120" width="600" height="35" fill="#dcfce7" stroke="#22c55e"/><text x="380" y="144" font-size="15" font-family="sans-serif">kernel 执行 3.0 ms</text>
+  <line x1="150" y1="180" x2="150" y2="210" stroke="#111827"/><line x1="750" y1="180" x2="750" y2="210" stroke="#111827"/>
+  <text x="105" y="235" font-size="16" font-family="sans-serif">同步前</text><text x="690" y="235" font-size="16" font-family="sans-serif">同步后</text>
+  <text x="330" y="255" font-size="16" font-family="sans-serif" fill="#4b5563">只量入队≈0.1 ms；同步计时≈3.1 ms</text>
+</svg>

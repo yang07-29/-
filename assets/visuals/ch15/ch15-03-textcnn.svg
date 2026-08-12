@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <title id="title">textCNN 最大时间汇聚</title><desc id="desc">宽度二的卷积在三个窗口产生零点二、二点四、零点一，最大汇聚输出二点四。</desc><rect width="920" height="360" rx="18" fill="#f8fafc"/>
+  <text x="36" y="48" font-family="Microsoft YaHei,Arial,sans-serif" font-size="24" font-weight="700" fill="#0f172a">15.3 一个通道只保留最强局部证据</text>
+  <text x="65" y="101" font-family="Arial,sans-serif" font-size="18" fill="#0f172a">not　good　at　all</text>
+  <rect x="55" y="125" width="170" height="70" rx="10" fill="#e0f2fe"/><rect x="235" y="125" width="170" height="70" rx="10" fill="#ddd6fe"/><rect x="415" y="125" width="170" height="70" rx="10" fill="#e0f2fe"/>
+  <text x="92" y="154" font-family="Arial,sans-serif" font-size="16" fill="#0f172a">not good</text><text x="125" y="181" font-family="Arial,sans-serif" font-size="18" fill="#334155">0.2</text><text x="280" y="154" font-family="Arial,sans-serif" font-size="16" fill="#0f172a">good at</text><text x="305" y="181" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#5b21b6">2.4</text><text x="470" y="154" font-family="Arial,sans-serif" font-size="16" fill="#0f172a">at all</text><text x="485" y="181" font-family="Arial,sans-serif" font-size="18" fill="#334155">0.1</text>
+  <rect x="665" y="105" width="210" height="160" rx="14" fill="#dcfce7"/><text x="690" y="145" font-family="Microsoft YaHei,Arial,sans-serif" font-size="17" font-weight="700" fill="#166534">max over time</text><text x="703" y="198" font-family="Arial,sans-serif" font-size="26" fill="#0f172a">max = 2.4</text><text x="695" y="235" font-family="Microsoft YaHei,Arial,sans-serif" font-size="14" fill="#334155">位置被压掉，强度保留</text>
+  <path d="M585 160H657" stroke="#64748b" stroke-width="3"/><path d="M650 152l10 8-10 8" fill="none" stroke="#64748b" stroke-width="3"/>
+  <text x="57" y="253" font-family="Microsoft YaHei,Arial,sans-serif" font-size="15" fill="#64748b">卷积核宽 K=2，共 S-K+1=3 个窗口</text>
+</svg>

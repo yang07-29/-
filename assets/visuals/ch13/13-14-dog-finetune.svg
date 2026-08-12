@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="285" viewBox="0 0 900 285">
+  <rect width="900" height="285" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：ImageNet 1000 类头换成 120 个犬种</text>
+  <rect x="40" y="80" width="240" height="110" rx="8" fill="#dbeafe" stroke="#3b82f6"/><text x="65" y="120" font-size="18" font-family="sans-serif">预训练 backbone</text><text x="65" y="155" font-size="17" font-family="sans-serif">保留纹理、耳朵、轮廓特征</text>
+  <text x="300" y="145" font-size="28" font-family="sans-serif">→</text>
+  <rect x="350" y="80" width="220" height="110" rx="8" fill="#fee2e2" stroke="#ef4444"/><text x="375" y="120" font-size="18" font-family="sans-serif">删除旧 1000 类头</text><text x="375" y="155" font-size="18" font-family="sans-serif">新建 Linear(...,120)</text>
+  <text x="590" y="145" font-size="28" font-family="sans-serif">→</text>
+  <rect x="640" y="80" width="215" height="110" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="665" y="120" font-size="18" font-family="sans-serif">犬种细粒度 logits</text><text x="690" y="155" font-size="18" font-family="monospace">(B,120)</text>
+  <text x="40" y="245" font-size="16" font-family="sans-serif" fill="#4b5563">类别相似度高：更重视高分辨率、干净标签与稳健验证，不盲目从零训练。</text>
+</svg>

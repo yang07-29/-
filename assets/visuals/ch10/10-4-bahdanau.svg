@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">Bahdanau动态上下文</title><desc id="desc">每个解码时间步用当前状态查询所有编码器输出，形成不同上下文。</desc>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#475569"/></marker></defs>
+  <rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">10.4 Bahdanau：解码每一步都重新“翻原文”</text>
+  <g fill="#dbeafe" stroke="#60a5fa" stroke-width="2"><rect x="55" y="105" width="120" height="70" rx="12"/><rect x="205" y="105" width="120" height="70" rx="12"/><rect x="355" y="105" width="120" height="70" rx="12"/></g>
+  <g font-size="18" text-anchor="middle" fill="#1e3a8a"><text x="115" y="147">h₁ (B,H)</text><text x="265" y="147">h₂ (B,H)</text><text x="415" y="147">h₃ (B,H)</text></g>
+  <rect x="210" y="235" width="210" height="72" rx="14" fill="#fef3c7"/><text x="315" y="266" text-anchor="middle" font-size="19" fill="#78350f">解码状态 sₜ₋₁</text><text x="315" y="291" text-anchor="middle" font-size="16" fill="#334155">当前查询 (B,H)</text>
+  <rect x="625" y="145" width="205" height="90" rx="16" fill="#dcfce7"/><text x="727" y="180" text-anchor="middle" font-size="20" fill="#14532d">上下文 cₜ</text><text x="727" y="211" text-anchor="middle" font-size="17" fill="#334155">Σ αₜᵢhᵢ · (B,H)</text>
+  <path d="M175 140C520 120 520 170 610 180" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#a)"/><path d="M325 140C520 140 520 180 610 185" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#a)"/><path d="M475 140C540 145 550 190 610 195" fill="none" stroke="#475569" stroke-width="4" marker-end="url(#a)"/><path d="M420 270C555 270 540 220 610 205" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+</svg>

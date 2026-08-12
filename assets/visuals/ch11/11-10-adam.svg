@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">Adam结合一阶矩和二阶矩</title><desc id="desc">一阶矩提供平滑方向，二阶矩提供坐标尺度，并在初期做偏差修正。</desc><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.10 Adam：方向用动量，步幅用 RMSProp</text>
+  <rect x="65" y="105" width="260" height="155" rx="18" fill="#fee2e2"/><text x="195" y="147" text-anchor="middle" font-size="21" fill="#7f1d1d">一阶矩 mₜ</text><text x="195" y="184" text-anchor="middle" font-size="18" fill="#334155">梯度的移动平均</text><text x="195" y="219" text-anchor="middle" font-size="18" fill="#334155">回答：往哪走？</text>
+  <rect x="365" y="105" width="260" height="155" rx="18" fill="#dbeafe"/><text x="495" y="147" text-anchor="middle" font-size="21" fill="#1e3a8a">二阶矩 vₜ</text><text x="495" y="184" text-anchor="middle" font-size="18" fill="#334155">平方梯度移动平均</text><text x="495" y="219" text-anchor="middle" font-size="18" fill="#334155">回答：各维走多远？</text>
+  <rect x="675" y="120" width="165" height="125" rx="18" fill="#dcfce7"/><text x="757" y="157" text-anchor="middle" font-size="20" fill="#14532d">偏差修正</text><text x="757" y="190" text-anchor="middle" font-size="17" fill="#334155">m̂、v̂</text><text x="757" y="220" text-anchor="middle" font-size="17" fill="#334155">修复初期偏小</text>
+  <text x="450" y="315" text-anchor="middle" font-size="19" fill="#475569">θ ← θ - η · m̂ / (√v̂ + ε)</text>
+</svg>

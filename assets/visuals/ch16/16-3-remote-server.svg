@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">远程服务器最小安全链路</title>
+  <desc id="desc">本地通过SSH连接远程GPU服务器，训练产物写入持久化目录并同步回本地。</desc>
+  <style>
+    text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill:#172033; }.h{font-size:24px;font-weight:700}.t{font-size:18px}.s{font-size:16px;fill:#4b5563}
+    .card{fill:#f8fafc;stroke:#64748b;stroke-width:2;rx:14}.secure{fill:#ecfdf5;stroke:#10b981;stroke-width:2;rx:14}.store{fill:#eff6ff;stroke:#3b82f6;stroke-width:2;rx:14}.line{stroke:#64748b;stroke-width:3;marker-end:url(#a)}
+  </style><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker></defs>
+  <text x="42" y="44" class="h">远程训练要同时管好连接、进程和产物</text>
+  <rect x="42" y="94" width="200" height="104" class="card"/><text x="70" y="130" class="t">本地电脑</text><text x="70" y="160" class="s">代码编辑 / 查看日志</text><text x="70" y="185" class="s">不保存云端密钥</text>
+  <line x1="242" y1="146" x2="320" y2="146" class="line"/><text x="258" y="126" class="s">SSH</text>
+  <rect x="324" y="94" width="270" height="104" class="secure"/><text x="352" y="130" class="t">远程 GPU 服务器</text><text x="352" y="160" class="s">环境检查 → 训练进程</text><text x="352" y="185" class="s">日志持续写入文件</text>
+  <line x1="594" y1="146" x2="672" y2="146" class="line"/>
+  <rect x="676" y="94" width="240" height="104" class="store"/><text x="704" y="130" class="t">持久化目录</text><text x="704" y="160" class="s">checkpoint / metrics</text><text x="704" y="185" class="s">版本与配置</text>
+  <path d="M796 198 C796 285, 145 285, 145 204" fill="none" class="line"/><text x="383" y="278" class="s">训练结束后同步产物，并在本地验证能加载</text>
+  <text x="42" y="330" class="t">最小验收：断开 SSH 后训练仍可继续；新进程能从 checkpoint 恢复。</text>
+</svg>

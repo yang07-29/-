@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300">
+  <rect width="900" height="300" fill="#ffffff"/>
+  <text x="30" y="38" font-size="24" font-family="sans-serif" fill="#111827">例：4 个样本切到 2 个工作器</text>
+  <rect x="35" y="70" width="250" height="95" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="55" y="103" font-size="17" font-family="sans-serif">GPU 0：样本梯度 2, 4</text><text x="55" y="135" font-size="20" font-family="sans-serif">本地均值 g₀=3</text>
+  <rect x="35" y="180" width="250" height="95" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="55" y="213" font-size="17" font-family="sans-serif">GPU 1：样本梯度 6, 8</text><text x="55" y="245" font-size="20" font-family="sans-serif">本地均值 g₁=7</text>
+  <text x="320" y="175" font-size="32" font-family="sans-serif">→</text>
+  <rect x="375" y="105" width="235" height="105" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="395" y="142" font-size="18" font-family="sans-serif">梯度规约</text><text x="395" y="176" font-size="22" font-family="sans-serif">(3+7)/2 = 5</text>
+  <text x="640" y="165" font-size="30" font-family="sans-serif">→</text>
+  <text x="700" y="145" font-size="18" font-family="sans-serif">每个副本</text><text x="700" y="178" font-size="18" font-family="sans-serif">应用同一更新</text>
+  <text x="375" y="260" font-size="16" font-family="sans-serif" fill="#4b5563">若切片大小不同，要按样本数加权，不能直接平均本地均值。</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">Notebook 单元格顺序与内核状态</title>
+  <desc id="desc">同一组单元格按不同顺序执行会得到不同结果，重启并全部运行用于验证可复现性。</desc>
+  <style>
+    text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #172033; }
+    .h { font-size: 24px; font-weight: 700; }
+    .t { font-size: 18px; }
+    .s { font-size: 16px; fill: #4b5563; }
+    .card { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 12; }
+    .good { fill: #ecfdf5; stroke: #10b981; stroke-width: 2; rx: 12; }
+    .bad { fill: #fff7ed; stroke: #f97316; stroke-width: 2; rx: 12; }
+    .arrow { stroke: #64748b; stroke-width: 3; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">同一份 Notebook，执行顺序不同，结果也会不同</text>
+  <rect x="40" y="72" width="250" height="76" class="card"/><text x="62" y="103" class="t">单元格 1：a = 10</text><text x="62" y="130" class="s">内核现在记住 a=10</text>
+  <line x1="290" y1="110" x2="346" y2="110" class="arrow"/>
+  <rect x="350" y="72" width="250" height="76" class="card"/><text x="372" y="103" class="t">单元格 2：b = a + 1</text><text x="372" y="130" class="s">内核现在记住 b=11</text>
+  <line x1="600" y1="110" x2="656" y2="110" class="arrow"/>
+  <rect x="660" y="72" width="250" height="76" class="good"/><text x="682" y="103" class="t">打印 b：11</text><text x="682" y="130" class="s">顺序执行，结果可解释</text>
+  <rect x="40" y="194" width="250" height="76" class="bad"/><text x="62" y="225" class="t">后来只运行：a = 100</text><text x="62" y="252" class="s">b 没有自动重算</text>
+  <line x1="290" y1="232" x2="346" y2="232" class="arrow"/>
+  <rect x="350" y="194" width="250" height="76" class="bad"/><text x="372" y="225" class="t">打印 b：仍是 11</text><text x="372" y="252" class="s">输出来自旧状态</text>
+  <line x1="600" y1="232" x2="656" y2="232" class="arrow"/>
+  <rect x="660" y="194" width="250" height="76" class="good"/><text x="682" y="225" class="t">重启 → 全部运行</text><text x="682" y="252" class="s">暴露隐藏依赖</text>
+  <text x="40" y="326" class="t">判断标准：从空内核按文档顺序运行，是否还能得到同样结果？</text>
+</svg>

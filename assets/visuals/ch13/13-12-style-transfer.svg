@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300">
+  <rect width="900" height="300" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：优化的是生成图像像素，不是特征网络</text>
+  <rect x="35" y="75" width="210" height="75" rx="8" fill="#dbeafe" stroke="#3b82f6"/><text x="60" y="120" font-size="18" font-family="sans-serif">内容目标：深层特征</text>
+  <rect x="35" y="175" width="210" height="75" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="55" y="220" font-size="18" font-family="sans-serif">风格目标：Gram 矩阵</text>
+  <text x="270" y="165" font-size="30" font-family="sans-serif">→</text>
+  <rect x="325" y="105" width="240" height="110" rx="8" fill="#f3f4f6" stroke="#6b7280"/><text x="355" y="145" font-size="18" font-family="sans-serif">冻结特征提取器</text><text x="355" y="180" font-size="18" font-family="sans-serif">计算三类损失</text>
+  <text x="590" y="165" font-size="30" font-family="sans-serif">→</text>
+  <rect x="645" y="105" width="210" height="110" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="675" y="145" font-size="18" font-family="sans-serif">更新 generated</text><text x="680" y="180" font-size="18" font-family="sans-serif">像素并裁到 [0,1]</text>
+  <text x="35" y="282" font-size="15" font-family="sans-serif" fill="#4b5563">内容管布局，风格管通道纹理统计，TV 管局部平滑。</text>
+</svg>

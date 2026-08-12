@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">动量在狭长谷底中的轨迹</title><desc id="desc">普通梯度在陡峭方向来回摆动，动量平均历史方向并沿谷底加速。</desc><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.6 动量：记住前几步，减少左右摇摆</text>
+  <ellipse cx="460" cy="195" rx="330" ry="105" fill="none" stroke="#cbd5e1" stroke-width="3"/><ellipse cx="460" cy="195" rx="240" ry="72" fill="none" stroke="#cbd5e1" stroke-width="3"/><ellipse cx="460" cy="195" rx="140" ry="42" fill="none" stroke="#cbd5e1" stroke-width="3"/>
+  <polyline points="130,120 230,265 310,135 385,245 440,165 485,220 530,185" fill="none" stroke="#ef4444" stroke-width="4"/><polyline points="130,120 220,155 315,178 410,189 515,194 610,195 690,195" fill="none" stroke="#2563eb" stroke-width="5"/>
+  <text x="155" y="295" font-size="18" fill="#991b1b">SGD：横向振荡</text><text x="600" y="165" font-size="18" fill="#1e3a8a">动量：历史方向相消/累积</text><text x="450" y="332" text-anchor="middle" font-size="18" fill="#475569">vₜ=βvₜ₋₁+gₜ，θₜ=θₜ₋₁-ηvₜ</text>
+</svg>

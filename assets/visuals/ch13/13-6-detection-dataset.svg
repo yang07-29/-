@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="285" viewBox="0 0 900 285">
+  <rect width="900" height="285" fill="#fff"/><text x="30" y="38" font-size="24" font-family="sans-serif">例：裁掉图像左侧 20 像素，框也要一起变</text>
+  <rect x="45" y="75" width="300" height="150" fill="#f9fafb" stroke="#6b7280"/><rect x="125" y="105" width="140" height="85" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="60" y="250" font-size="16" font-family="sans-serif">原框 x=[40,110]（示意比例）</text>
+  <text x="375" y="155" font-size="28" font-family="sans-serif">裁左 20 →</text>
+  <rect x="520" y="75" width="280" height="150" fill="#f9fafb" stroke="#6b7280"/><rect x="580" y="105" width="140" height="85" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><text x="540" y="250" font-size="16" font-family="sans-serif">新框 x=[20,90]</text>
+  <text x="320" y="278" font-size="15" font-family="sans-serif" fill="#4b5563">只裁图片不改标注，会让监督信号整体错位。</text>
+</svg>

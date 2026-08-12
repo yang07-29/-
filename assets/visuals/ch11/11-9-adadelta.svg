@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">Adadelta使用梯度和更新量两个尺度</title><desc id="desc">梯度平方移动平均放在分母，过去更新平方移动平均放在分子。</desc><rect width="900" height="360" rx="24" fill="#f8fafc"/><text x="45" y="52" font-size="27" font-weight="700" fill="#0f172a">11.9 Adadelta：用过去“步幅”校准当前梯度</text>
+  <rect x="75" y="110" width="265" height="145" rx="18" fill="#dcfce7"/><text x="207" y="151" text-anchor="middle" font-size="20" fill="#14532d">分子 RMS[Δθ]ₜ₋₁</text><text x="207" y="191" text-anchor="middle" font-size="18" fill="#334155">过去更新有多大</text><text x="207" y="225" text-anchor="middle" font-size="17" fill="#334155">参数单位</text>
+  <text x="382" y="190" font-size="38" fill="#475569">÷</text><rect x="440" y="110" width="265" height="145" rx="18" fill="#dbeafe"/><text x="572" y="151" text-anchor="middle" font-size="20" fill="#1e3a8a">分母 RMS[g]ₜ</text><text x="572" y="191" text-anchor="middle" font-size="18" fill="#334155">近期梯度有多大</text><text x="572" y="225" text-anchor="middle" font-size="17" fill="#334155">梯度单位</text>
+  <text x="748" y="190" font-size="38" fill="#475569">× g</text><text x="450" y="310" text-anchor="middle" font-size="19" fill="#78350f">Δθₜ = - RMS[Δθ]ₜ₋₁ / RMS[g]ₜ × gₜ</text>
+</svg>

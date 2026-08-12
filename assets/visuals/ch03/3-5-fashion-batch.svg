@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+  <title id="t">Fashion-MNIST批次的Shape变化</title><desc id="d">四张单通道28乘28图像组成批次，展平后送入十分类线性层。</desc>
+  <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172033}.h{font-size:24px;font-weight:700}.x{font-size:18px}.s{font-size:15px;fill:#475569}.b{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:12}.o{fill:#eff6ff;stroke:#3b82f6;stroke-width:2;rx:12}.a{stroke:#64748b;stroke-width:3;marker-end:url(#m)}</style><defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#64748b"/></marker></defs>
+  <text x="40" y="42" class="h">批量维一直保留，只把每张图内部的三维展平</text>
+  <rect x="40" y="92" width="230" height="110" class="b"/><text x="62" y="128" class="x">4 张灰度图</text><text x="62" y="162" class="x">X: (4,1,28,28)</text><text x="62" y="188" class="s">标签 y: (4,)</text>
+  <line x1="270" y1="147" x2="354" y2="147" class="a"/><text x="290" y="128" class="s">Flatten</text>
+  <rect x="358" y="92" width="230" height="110" class="o"/><text x="380" y="128" class="x">每张图 784 个数</text><text x="380" y="162" class="x">(4,784)</text><text x="380" y="188" class="s">空间邻接不再显式保留</text>
+  <line x1="588" y1="147" x2="672" y2="147" class="a"/><text x="610" y="128" class="s">Linear</text>
+  <rect x="676" y="92" width="244" height="110" class="o"/><text x="698" y="128" class="x">每张图 10 个分数</text><text x="698" y="162" class="x">logits: (4,10)</text><text x="698" y="188" class="s">不是 4×10 个样本</text>
+  <text x="40" y="255" class="x">第 0 维 4 始终表示样本数；Flatten 不应把批量维一起压掉。</text>
+</svg>
