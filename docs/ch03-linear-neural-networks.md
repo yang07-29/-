@@ -77,6 +77,19 @@ $$
 | `X @ w` | `(B, 1)` | 每个样本一个加权和 |
 | `y_hat`、`y` | `(B, 1)` | 预测值与真实值 |
 
+```mermaid
+flowchart LR
+    X["X: (B,d)"] --> M["矩阵乘法 @"]
+    W["w: (d,1)"] --> M
+    M --> Z["Xw: (B,1)"]
+    B["b: (1,)"] --> A["沿批量维广播相加"]
+    Z --> A
+    A --> YH["y_hat: (B,1)"]
+    Y["y: (B,1)"] --> L["逐样本比较"]
+    YH --> L
+    L --> LV["loss: (B,1)"]
+```
+
 这里最危险的错误不是程序报错，而是程序不报错：如果 `y_hat` 是 `(B, 1)`、`y` 是 `(B,)`，两者相减会按照广播规则变成 `(B, B)`。模型仍能运行，但算的已经不是逐样本误差。
 
 因此完整代码中明确使用：
@@ -123,6 +136,19 @@ $\eta$ 是学习率：
 
 所谓小批量随机梯度下降（mini-batch SGD），就是每次只看一小批样本来估计方向。它比每次只看一个样本稳定，又比每次使用整个数据集便宜，还能发挥矩阵并行计算的优势。
 
+```mermaid
+flowchart TD
+    P0["参数当前值 w,b"] --> F["Forward 生成预测"]
+    F --> L["Loss 生成标量损失"]
+    L --> BW["backward 把梯度写入 .grad"]
+    BW --> S["step 或手写 SGD 读取 .grad"]
+    S --> P1["参数得到新值"]
+    P1 --> C["grad 清零或设为 None"]
+    C --> P0
+```
+
+图里最容易混淆的地方是：参数值和参数梯度是两份不同状态。`backward()` 更新的是 `.grad`，SGD 更新的才是参数值。
+
 ---
 
 ## 3.2 线性回归：从零开始实现
@@ -141,6 +167,29 @@ $\eta$ 是学习率：
 | `squared_loss` | 计算逐样本误差 | 目标函数 |
 | `loss.mean().backward()` | 求平均损失对参数的梯度 | 反向传播 |
 | `manual_sgd` | 沿负梯度方向修改参数 | 优化 |
+
+### 重点代码怎样逐行读
+
+完整程序把关键步骤写成“一行代码配一行中文注释”。阅读时不要只看函数名，建议给每一行回答三个问题：输入 Shape 是什么、输出 Shape 是什么、它有没有改变参数或梯度状态。
+
+```python
+# 1. Forward：用当前参数产生预测 (B,1)。
+predictions = linreg(batch_features, weight, bias)
+# 2. Loss：逐样本损失取均值，得到标量。
+loss = squared_loss(predictions, batch_labels).mean()
+# 3. Backward：梯度进入 weight.grad 与 bias.grad，参数值尚未变化。
+loss.backward()
+# 4. Update：读取梯度修改参数，并清掉本批梯度。
+manual_sgd([weight, bias], learning_rate)
+```
+
+执行完四行后的状态变化如下：
+
+| 时刻 | 参数值 | `.grad` | 计算图 |
+| --- | --- | --- | --- |
+| Forward 后 | 未变 | 仍是旧值或 `None` | 已建立 |
+| `backward()` 后 | 未变 | 写入本批梯度 | 反向使用后通常被释放 |
+| SGD 后 | 已改变 | 被设为 `None` | 更新动作不入图 |
 
 ### 为什么先生成“假数据”
 
@@ -338,6 +387,20 @@ $$
 $$
 
 白话解释：所有错误类别的分数按预测概率往下压；真实类别的分数则往上推。模型越自信地猜错，纠正力量越大。
+
+```mermaid
+flowchart LR
+    X["图像 X: (B,1,28,28)"] --> FLAT["Flatten: (B,784)"]
+    FLAT --> LINEAR["Linear: W(784,10), b(10)"]
+    LINEAR --> LOGITS["logits: (B,10)"]
+    LOGITS --> CE["CrossEntropyLoss"]
+    Y["类别索引 y: (B,)"] --> CE
+    CE --> LOSS["标量 loss"]
+    LOSS --> GRAD["反向：p - one_hot(y)"]
+    GRAD --> LINEAR
+```
+
+这张图也说明了一个关键接口：`CrossEntropyLoss` 的左输入是 logits，右输入是类别索引；中间不需要手动插入 Softmax 或 one-hot。
 
 ### 为什么预测时不用真的计算 Softmax
 
@@ -615,6 +678,69 @@ targets = targets.to(device)
 <summary>6. 如何证明一次训练真的更新了参数？</summary>
 
 在一个很小的 batch 上保存更新前参数，执行 forward、loss、backward、step，再比较参数是否改变；同时检查损失是有限数、关键参数的 `.grad` 不是 `None`，Shape 与参数一致。
+
+</details>
+
+<details>
+<summary>7. [Shape] 若 `X=(32,2)`、`w=(2,1)`、`b=(1,)`，前向和损失各是什么 Shape？</summary>
+
+`X @ w` 为 `(32,1)`，加上沿批量维广播的 `b` 后仍为 `(32,1)`。若标签也整理为 `(32,1)`，逐样本平方损失为 `(32,1)`；调用 `.mean()` 后得到零维标量张量，可直接执行 `backward()`。
+
+</details>
+
+<details>
+<summary>8. [广播诊断] 为什么 `(32,1) - (32,)` 会得到 `(32,32)`？怎样修复？</summary>
+
+广播会从末尾维度对齐：`(32,1)` 与 `(32,)` 被理解成 `(32,1)` 与 `(1,32)`，两个单例维分别扩展，结果成为 `(32,32)`。应在计算损失前用 `targets.reshape_as(predictions)`，让两者都为 `(32,1)`。
+
+</details>
+
+<details>
+<summary>9. [代码推演] 连续两批都不清梯度，第二次 `backward()` 后 `.grad` 保存什么？</summary>
+
+保存第一批梯度与第二批梯度之和，而不是只有第二批梯度。若这是有意的梯度累积，应在累计若干批后再 `step()` 并清梯度；普通 mini-batch 训练则应在每次反向前或更新后清除旧梯度。
+
+</details>
+
+<details>
+<summary>10. [代码推演] `optimizer.zero_grad(set_to_none=True)` 放在 `step()` 后可以吗？</summary>
+
+可以，关键约束是下一次 `backward()` 前旧梯度必须已清除。常见模板把它放在 forward/loss 后、backward 前，逻辑边界更清楚；放在本批 `step()` 后也能得到相同结果，但发生异常或提前 `continue` 时更容易遗漏。
+
+</details>
+
+<details>
+<summary>11. [数值稳定] logits 为 `[1000, 999, 998]` 时，直接 Softmax 为什么危险？</summary>
+
+`exp(1000)` 会超出普通浮点数范围，产生 `inf`，随后分母和除法可能得到 `NaN`。同一行先减最大值后变为 `[0,-1,-2]`，Softmax 概率不变，但指数都在 `(0,1]`，计算稳定。
+
+</details>
+
+<details>
+<summary>12. [接口] 分类标签为什么通常是 `(B,)` 的 long 索引，而不是 `(B,10)` one-hot？</summary>
+
+单标签交叉熵只需知道每个样本的真实类别位置。索引标签更省内存，框架可直接选择相应 logit；`nn.CrossEntropyLoss` 的常规类别索引接口要求 `torch.long` 和 Shape `(B,)`。软标签、标签平滑等特殊情况才可能传入概率分布。
+
+</details>
+
+<details>
+<summary>13. [指标] 三个 batch 分别有 32、32、5 个样本，怎样汇总平均损失？</summary>
+
+若每批损失是 mean，应计算 `(loss1×32 + loss2×32 + loss3×5) / 69`。不能计算 `(loss1+loss2+loss3)/3`，因为那会让只有 5 个样本的最后一批与 32 个样本的批次拥有相同权重。
+
+</details>
+
+<details>
+<summary>14. [故障诊断] 训练准确率始终约 10%，最先检查什么？</summary>
+
+先拿一个 batch 检查图像 Shape、标签范围和 dtype，再检查 logits 是否为 `(B,10)`、损失是否直接接 logits、参数梯度是否存在、`step()` 是否执行。10 类任务长期约 10% 通常意味着接近随机猜测；确认链路无误后再检查学习率、数据预处理和模型容量。
+
+</details>
+
+<details>
+<summary>15. [模型能力] 为什么增加训练轮数也无法让 Softmax 回归学会复杂曲线边界？</summary>
+
+训练更久只能在当前函数族中寻找更好的参数，不能改变函数族本身。Softmax 回归的 logits 是输入的仿射函数，任意两类等分位置仍是线性超平面；要表达复杂边界，需要加入隐藏层与非线性激活函数，这正是第四章的主题。
 
 </details>
 
