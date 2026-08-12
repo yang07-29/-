@@ -4,6 +4,9 @@ __pycache__/
 .venv/
 venv/
 data/
+output/
+tmp/
+学习笔记生成规范.md
 *.pt
 *.pth
 .DS_Store
