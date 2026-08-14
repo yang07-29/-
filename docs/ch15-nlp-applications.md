@@ -310,7 +310,7 @@ $$
 沿 $N$ 维 softmax，把假设软对齐到每个前提词：
 
 $$
-\boldsymbol\beta_i=\sum_j\operatorname{softmax}_j(e_{ij})\mathbf b_j.
+\boldsymbol\beta_i=\sum_j\mathrm{softmax}_j(e_{ij})\mathbf b_j.
 $$
 
 转置分数并沿 $M$ 维 softmax，可得到每个假设词对应的前提软对齐 $\boldsymbol\alpha_j$。padding 必须在 softmax 前设为很小分数，否则补位也会分到概率。

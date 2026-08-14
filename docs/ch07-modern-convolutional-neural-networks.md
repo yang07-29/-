@@ -69,6 +69,21 @@ flowchart LR
 | ResNet | 网络加深后优化反而变差、恒等映射不易学 |
 | DenseNet | 特征重复学习、早期信息到后层路径太长 |
 
+## 先看整网结构：局部小图不能代替模型全图
+
+前面的时间线回答“为什么出现这个模型”，下面这张总图回答“一个输入到底经过哪些阶段才变成类别 logits”。先只顺着每张卡从上往下读，不必背原论文的每一层通道数：
+
+![AlexNet、VGG、NiN、GoogLeNet、ResNet 与 DenseNet 完整结构总览](../assets/visuals/ch07/7-0-cnn-model-atlas.svg)
+
+读任何 CNN 结构图时固定问四件事：
+
+1. **哪里读取空间邻域？** 通常是大于 `1×1` 的卷积；
+2. **哪里改变高宽？** 通常是池化或 stride 大于 1 的卷积；
+3. **不同路线怎样合并？** Inception、DenseNet 用通道拼接，ResNet 用逐元素相加；
+4. **怎样变成类别分数？** AlexNet/VGG 使用较重的全连接头，NiN 先生成类别通道再做 GAP，其他现代模型多在 GAP 后接较小的线性层。
+
+这张图是整网导航，后面每节原有的小图负责解释一个可计算机制。两类图不能互相替代：只看整网图容易背层名却不会算，只看局部图又可能不知道它在整台模型中的位置。结构依据 [D2L 第 7 章官方目录与各模型小节](https://zh-v2.d2l.ai/chapter_convolutional-modern/index.html)重新绘制，层数经过抽象，重点保留数据流与设计差异。
+
 ---
 
 ## 7.1 AlexNet：证明“特征可以学出来”
@@ -100,7 +115,7 @@ flowchart LR
 ### ReLU 为什么在深网络中重要
 
 $$
-\operatorname{ReLU}(x)=\max(0,x)
+\mathrm{ReLU}(x)=\max(0,x)
 $$
 
 对正数区域，ReLU 导数为 1，不像 sigmoid 在绝对值较大时容易进入导数接近 0 的饱和区。它不能保证任何深网都不发生梯度问题，但在当时显著改善了深层 CNN 的优化速度。
@@ -226,7 +241,17 @@ $$
 
 ![NiN 全局平均池化的逐通道手算](../assets/visuals/ch07/7-3-nin-gap.svg)
 
-### 截图里缺失的重点：NiN 与 AlexNet、VGG 到底差在哪
+### 整网对照图：NiN 与 VGG 到底差在哪
+
+![VGG 与 NiN 从输入、重复块到分类输出的完整架构对照](../assets/visuals/ch07/7-3-vgg-vs-nin-architecture.svg)
+
+这张图按“输入 → 特征块 → 下采样 → 分类头 → logits”从上往下读：
+
+- **VGG 左侧**：`3×3` 小卷积负责逐层提特征，池化负责缩小高宽；最后把 `(N,C,H,W)` 展平，再交给几层全连接。全连接的输入长度含有 `H×W`，因此既重又依赖固定空间尺寸。
+- **NiN 右侧**：每个 NiN 块先用普通卷积读取邻域，再用两个 `1×1` 卷积在每个位置重组通道；最后先得到 `K` 个类别通道，再只对高和宽求平均，直接得到 `(N,K)`。
+- **最容易混淆处**：GAP 不是把所有元素平均成一个数。它对每个通道分别平均，所以 `K` 个类别通道会留下 `K` 个 logits。
+
+图为依据 [D2L VGG](https://zh-v2.d2l.ai/chapter_convolutional-modern/vgg.html) 与 [D2L NiN](https://zh-v2.d2l.ai/chapter_convolutional-modern/nin.html) 结构关系做的原创重绘，不是课程截图。
 
 先抓共同点：三者前半段都用卷积提取空间特征。真正明显的差别在于“卷积块内部怎样加工特征”和“最后怎样分类”。
 

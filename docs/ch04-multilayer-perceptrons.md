@@ -393,7 +393,7 @@ flowchart LR
 对一个极小计算：
 
 $$
-z=xw+b,\qquad a=\operatorname{ReLU}(z),\qquad
+z=xw+b,\qquad a=\mathrm{ReLU}(z),\qquad
 L=\frac12(a-y)^2,
 $$
 
@@ -539,7 +539,7 @@ flowchart TD
 房价常用 log-RMSE：
 
 $$
-\operatorname{logRMSE}
+\mathrm{logRMSE}
 =\sqrt{\frac1n\sum_{i=1}^{n}
 \left(\log \hat y_i-\log y_i\right)^2}.
 $$
@@ -749,7 +749,7 @@ Tanh 或近线性激活常从 Xavier 开始，ReLU 家族常用 He/Kaiming。选
 <details>
 <summary>22. 【八股深答】Dropout 为什么训练时除以 $1-p$，评估时却关闭？</summary>
 
-**结论：**倒置 Dropout 用 $m\odot h/(1-p)$ 保持训练时激活期望与原激活相同，因此评估时无需再缩放。**机制：**掩码 $m\sim\operatorname{Bernoulli}(1-p)$，故 $E[mh/(1-p)]=h$。**工程影响：**必须用 `model.train()`/`model.eval()` 切换行为；只关闭梯度不会关闭 Dropout。**误区：**Dropout 不是把权重永久删除，也不能在评估时继续随机丢弃后再期待稳定结果。**追问：**它主要减少特征共适应，但是否改善泛化仍需验证集证据。
+**结论：**倒置 Dropout 用 $m\odot h/(1-p)$ 保持训练时激活期望与原激活相同，因此评估时无需再缩放。**机制：**掩码 $m\sim\mathrm{Bernoulli}(1-p)$，故 $E[mh/(1-p)]=h$。**工程影响：**必须用 `model.train()`/`model.eval()` 切换行为；只关闭梯度不会关闭 Dropout。**误区：**Dropout 不是把权重永久删除，也不能在评估时继续随机丢弃后再期待稳定结果。**追问：**它主要减少特征共适应，但是否改善泛化仍需验证集证据。
 
 </details>
 

@@ -396,7 +396,7 @@ BPE 的合并顺序很重要：应用新词时必须按训练时规则顺序执�
 余弦相似度为：
 
 $$
-\operatorname{cos}(\mathbf x,\mathbf y)=
+\mathrm{cos}(\mathbf x,\mathbf y)=
 \frac{\mathbf x^\top\mathbf y}{\lVert\mathbf x\rVert\lVert\mathbf y\rVert}.
 $$
 

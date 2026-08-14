@@ -673,7 +673,7 @@ loss = (token_losses * mask).sum() / mask.sum()
 BLEU 同时考虑预测与参考译文的 n-gram 重合率，并惩罚过短预测。简化形式：
 
 $$
-\operatorname{BLEU}
+\mathrm{BLEU}
 =\exp\left(\min\left(0,1-\frac{\text{len(label)}}{\text{len(pred)}}\right)\right)
 \prod_{n=1}^{k}p_n^{1/2^n}.
 $$

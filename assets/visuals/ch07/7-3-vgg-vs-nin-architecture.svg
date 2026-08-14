@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="900" viewBox="0 0 1480 900" role="img" aria-labelledby="title desc">
+  <title id="title">VGG 与 NiN 的完整架构差异</title>
+  <desc id="desc">左侧展示 VGG 从重复卷积块到大型全连接头，右侧展示 NiN 从空间卷积和一乘一卷积组成的块到类别通道及全局平均池化。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .title{font:700 30px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .sub{font:16px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#475569}
+      .colTitle{font:700 27px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .label{font:17px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .small{font:14px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#334155}
+      .note{font:700 16px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#075985}
+      .panel{fill:#f8fafc;stroke:#94a3b8;stroke-width:2}
+      .input{fill:#e2e8f0;stroke:#64748b;stroke-width:1.5}
+      .conv{fill:#dbeafe;stroke:#2563eb;stroke-width:1.5}
+      .point{fill:#cffafe;stroke:#0891b2;stroke-width:1.5}
+      .pool{fill:#e0e7ff;stroke:#6366f1;stroke-width:1.5}
+      .heavy{fill:#fef3c7;stroke:#d97706;stroke-width:1.5}
+      .out{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5}
+      .arrow{stroke:#475569;stroke-width:1.8;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1480" height="900" fill="#ffffff"/>
+  <text x="740" y="44" text-anchor="middle" class="title">VGG 与 NiN：前面都提特征，差别集中在“块内部”和“分类头”</text>
+  <text x="740" y="75" text-anchor="middle" class="sub">蓝色是空间卷积，青色是 1×1 逐位置通道重组，黄色是参数量很大的全连接头</text>
+
+  <g transform="translate(50,105)">
+    <rect width="660" height="720" rx="20" class="panel"/>
+    <text x="330" y="45" text-anchor="middle" class="colTitle">VGG：重复小卷积块 + 大型全连接分类头</text>
+    <rect x="140" y="72" width="380" height="42" rx="8" class="input"/><text x="330" y="99" text-anchor="middle" class="label">输入：N×3×H×W</text>
+    <line x1="330" y1="114" x2="330" y2="136" class="arrow"/>
+    <rect x="120" y="136" width="420" height="104" rx="10" class="conv"/>
+    <text x="330" y="164" text-anchor="middle" class="label">VGG 块 1</text>
+    <text x="330" y="190" text-anchor="middle" class="small">3×3 Conv + ReLU → 3×3 Conv + ReLU</text>
+    <text x="330" y="216" text-anchor="middle" class="small">块内：H、W 不变；通道统一到 C₁</text>
+    <line x1="330" y1="240" x2="330" y2="262" class="arrow"/>
+    <rect x="170" y="262" width="320" height="48" rx="8" class="pool"/><text x="330" y="292" text-anchor="middle" class="label">2×2 MaxPool：H、W 各减半</text>
+    <line x1="330" y1="310" x2="330" y2="332" class="arrow"/>
+    <rect x="120" y="332" width="420" height="92" rx="10" class="conv"/>
+    <text x="330" y="360" text-anchor="middle" class="label">VGG 块 2、3、4、5</text>
+    <text x="330" y="387" text-anchor="middle" class="small">重复小卷积；阶段末池化；空间变小、通道增多</text>
+    <line x1="330" y1="424" x2="330" y2="446" class="arrow"/>
+    <rect x="140" y="446" width="380" height="48" rx="8" class="input"/><text x="330" y="476" text-anchor="middle" class="label">最后特征示例：N×512×7×7</text>
+    <line x1="330" y1="494" x2="330" y2="516" class="arrow"/>
+    <rect x="120" y="516" width="420" height="110" rx="10" class="heavy"/>
+    <text x="330" y="544" text-anchor="middle" class="label">Flatten：512×7×7 = 25088</text>
+    <text x="330" y="572" text-anchor="middle" class="label">FC 4096 → FC 4096 → FC K</text>
+    <text x="330" y="601" text-anchor="middle" class="small">仅第一层 25088→4096 就约 1.03 亿个权重</text>
+    <line x1="330" y1="626" x2="330" y2="648" class="arrow"/>
+    <rect x="190" y="648" width="280" height="44" rx="8" class="out"/><text x="330" y="676" text-anchor="middle" class="label">输出 logits：N×K</text>
+    <text x="330" y="710" text-anchor="middle" class="note">记忆点：块很规则，但分类头依赖固定展平长度</text>
+  </g>
+
+  <g transform="translate(770,105)">
+    <rect width="660" height="720" rx="20" class="panel"/>
+    <text x="330" y="45" text-anchor="middle" class="colTitle">NiN：逐位置小网络 + 类别通道 + GAP</text>
+    <rect x="140" y="72" width="380" height="42" rx="8" class="input"/><text x="330" y="99" text-anchor="middle" class="label">输入：N×3×H×W</text>
+    <line x1="330" y1="114" x2="330" y2="136" class="arrow"/>
+    <rect x="120" y="136" width="420" height="130" rx="10" class="conv"/>
+    <text x="330" y="162" text-anchor="middle" class="label">NiN 块 1</text>
+    <rect x="170" y="176" width="320" height="28" rx="6" class="conv"/><text x="330" y="196" text-anchor="middle" class="small">空间 Conv：先读取邻域</text>
+    <rect x="170" y="210" width="320" height="22" rx="6" class="point"/><text x="330" y="226" text-anchor="middle" class="small">1×1 Conv + ReLU：重组通道</text>
+    <rect x="170" y="238" width="320" height="22" rx="6" class="point"/><text x="330" y="254" text-anchor="middle" class="small">1×1 Conv + ReLU：再次非线性组合</text>
+    <line x1="330" y1="266" x2="330" y2="288" class="arrow"/>
+    <rect x="170" y="288" width="320" height="42" rx="8" class="pool"/><text x="330" y="315" text-anchor="middle" class="label">MaxPool：下采样</text>
+    <line x1="330" y1="330" x2="330" y2="352" class="arrow"/>
+    <rect x="120" y="352" width="420" height="86" rx="10" class="point"/>
+    <text x="330" y="380" text-anchor="middle" class="label">继续堆 NiN 块 + 池化</text>
+    <text x="330" y="410" text-anchor="middle" class="small">每个位置都共享同一个通道小网络</text>
+    <line x1="330" y1="438" x2="330" y2="460" class="arrow"/>
+    <rect x="120" y="460" width="420" height="76" rx="10" class="point"/>
+    <text x="330" y="488" text-anchor="middle" class="label">最后一个 NiN 块输出 K 个通道</text>
+    <text x="330" y="516" text-anchor="middle" class="small">Shape：N×K×H'×W'，一通道对应一类别证据图</text>
+    <line x1="330" y1="536" x2="330" y2="558" class="arrow"/>
+    <rect x="120" y="558" width="420" height="68" rx="10" class="heavy"/>
+    <text x="330" y="584" text-anchor="middle" class="label">GAP：每个通道只平均 H'、W'</text>
+    <text x="330" y="609" text-anchor="middle" class="small">没有可训练参数，不把 K 个通道混成一个数</text>
+    <line x1="330" y1="626" x2="330" y2="648" class="arrow"/>
+    <rect x="190" y="648" width="280" height="44" rx="8" class="out"/><text x="330" y="676" text-anchor="middle" class="label">输出 logits：N×K</text>
+    <text x="330" y="710" text-anchor="middle" class="note">记忆点：先生成类别通道，再把每张证据图求平均</text>
+  </g>
+
+  <text x="740" y="862" text-anchor="middle" class="sub">共同点：卷积前半段都提取空间特征；本质差异：VGG 用 Flatten+FC 分类，NiN 用类别通道+GAP 分类</text>
+</svg>

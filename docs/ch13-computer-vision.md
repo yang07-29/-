@@ -235,7 +235,7 @@ $$A=|S|+|R|-1,$$
 
 ### IoU：重叠程度的共同尺子
 
-$$\operatorname{IoU}(A,B)=\frac{|A\cap B|}{|A\cup B|}=\frac{|A\cap B|}{|A|+|B|-|A\cap B|}.$$
+$$\mathrm{IoU}(A,B)=\frac{|A\cap B|}{|A\cup B|}=\frac{|A\cap B|}{|A|+|B|-|A\cap B|}.$$
 
 IoU 在 `[0,1]`：0 不交，1 完全重合。训练匹配常先让高于阈值的锚框认领 GT，再强制每个 GT 至少匹配一个锚框，避免某物体没有正样本。
 
@@ -475,7 +475,7 @@ prediction = logits.argmax(dim=1)  # (B,H,W)
 
 背景占 95% 时，全预测背景也有 95% 像素准确率。更有信息的是每类 IoU 与 mIoU：
 
-$$\operatorname{IoU}_c=\frac{TP_c}{TP_c+FP_c+FN_c}.$$
+$$\mathrm{IoU}_c=\frac{TP_c}{TP_c+FP_c+FN_c}.$$
 
 [`segmentation_fcn.py`](../code/ch13/segmentation_fcn.py) 合成背景/矩形/圆形三类 mask，真实完成逐像素反向。
 

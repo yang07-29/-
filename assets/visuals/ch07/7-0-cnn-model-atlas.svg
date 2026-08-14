@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1040" viewBox="0 0 1440 1040" role="img" aria-labelledby="title desc">
+  <title id="title">第七章六类现代卷积网络完整结构总览</title>
+  <desc id="desc">用六张结构卡展示 AlexNet、VGG、NiN、GoogLeNet、ResNet 和 DenseNet 从输入到分类输出的数据流与核心差异。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .title{font:700 30px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .subtitle{font:16px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#475569}
+      .cardTitle{font:700 24px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .label{font:16px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#0f172a}
+      .small{font:14px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#334155}
+      .key{font:700 15px 'Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#075985}
+      .card{fill:#f8fafc;stroke:#94a3b8;stroke-width:2}
+      .input{fill:#e2e8f0;stroke:#64748b;stroke-width:1.5}
+      .stage{fill:#dbeafe;stroke:#3b82f6;stroke-width:1.5}
+      .special{fill:#cffafe;stroke:#0891b2;stroke-width:1.5}
+      .head{fill:#fef3c7;stroke:#d97706;stroke-width:1.5}
+      .out{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5}
+      .arrow{stroke:#475569;stroke-width:1.8;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1440" height="1040" fill="#ffffff"/>
+  <text x="720" y="44" text-anchor="middle" class="title">现代 CNN 不是六串层名，而是六种“信息怎样往后走”</text>
+  <text x="720" y="75" text-anchor="middle" class="subtitle">读图顺序：输入 → 特征提取阶段 → 下采样/连接方式 → 分类头 → logits</text>
+
+  <!-- AlexNet -->
+  <g transform="translate(30,100)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">AlexNet</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入：N×3×224×224</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">大核卷积 + 最大池化</text><text x="220" y="160" text-anchor="middle" class="small">快速扩大视野并下采样</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="stage"/><text x="220" y="208" text-anchor="middle" class="label">连续卷积 + ReLU</text><text x="220" y="228" text-anchor="middle" class="small">通道增多，空间逐渐变小</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">Flatten + 大型全连接 + Dropout</text><text x="220" y="296" text-anchor="middle" class="small">参数主要集中在分类头</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：让大型 CNN 真正可训练</text>
+  </g>
+
+  <!-- VGG -->
+  <g transform="translate(500,100)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">VGG</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入：N×3×H×W</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">VGG 块：多个 3×3 Conv</text><text x="220" y="160" text-anchor="middle" class="small">块内保持高宽，反复加非线性</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="special"/><text x="220" y="208" text-anchor="middle" class="label">块末 MaxPool：H、W 减半</text><text x="220" y="228" text-anchor="middle" class="small">重复多个 stage，通常同时升通道</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">Flatten + 4096 + 4096 + K</text><text x="220" y="296" text-anchor="middle" class="small">结构规则，但全连接头仍很重</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：用重复小块统一设计语言</text>
+  </g>
+
+  <!-- NiN -->
+  <g transform="translate(970,100)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">NiN</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入：N×3×H×W</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">NiN 块：空间 Conv + 1×1 + 1×1</text><text x="220" y="160" text-anchor="middle" class="small">先看邻域，再逐位置重组通道</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="special"/><text x="220" y="208" text-anchor="middle" class="label">池化后重复 NiN 块</text><text x="220" y="228" text-anchor="middle" class="small">最后映射成 K 个类别通道</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">GAP：每个通道平均 H×W</text><text x="220" y="296" text-anchor="middle" class="small">没有大型全连接分类头</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：逐位置 MLP + 全局平均</text>
+  </g>
+
+  <!-- GoogLeNet -->
+  <g transform="translate(30,570)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">GoogLeNet</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入 → stem 卷积</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">Inception：四条并行分支</text><text x="220" y="160" text-anchor="middle" class="small">1×1 / 3×3 / 5×5 / Pool</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="special"/><text x="220" y="208" text-anchor="middle" class="label">沿通道 concat，再重复多个 stage</text><text x="220" y="228" text-anchor="middle" class="small">1×1 瓶颈先控制昂贵分支的通道</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">GAP + Linear</text><text x="220" y="296" text-anchor="middle" class="small">汇总多尺度特征</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：多尺度并行，而后拼接</text>
+  </g>
+
+  <!-- ResNet -->
+  <g transform="translate(500,570)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">ResNet</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入 → stem 卷积</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">主分支学习 F(x)</text><text x="220" y="160" text-anchor="middle" class="small">Conv → BN → ReLU → Conv → BN</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="special"/><text x="220" y="208" text-anchor="middle" class="label">与 shortcut(x) 逐元素相加</text><text x="220" y="228" text-anchor="middle" class="small">Shape 不同先用 1×1 投影对齐</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">残差 stage × 多组 → GAP</text><text x="220" y="296" text-anchor="middle" class="small">短路径贯穿深网络</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：y = F(x) + shortcut(x)</text>
+  </g>
+
+  <!-- DenseNet -->
+  <g transform="translate(970,570)">
+    <rect width="440" height="430" rx="18" class="card"/>
+    <text x="220" y="38" text-anchor="middle" class="cardTitle">DenseNet</text>
+    <rect x="65" y="58" width="310" height="42" rx="8" class="input"/><text x="220" y="85" text-anchor="middle" class="label">输入 → stem 卷积</text>
+    <line x1="220" y1="100" x2="220" y2="120" class="arrow"/>
+    <rect x="65" y="120" width="310" height="48" rx="8" class="stage"/><text x="220" y="140" text-anchor="middle" class="label">DenseBlock：读取全部历史特征</text><text x="220" y="160" text-anchor="middle" class="small">xₗ = Hₗ([x₀,x₁,…,xₗ₋₁])</text>
+    <line x1="220" y1="168" x2="220" y2="188" class="arrow"/>
+    <rect x="65" y="188" width="310" height="48" rx="8" class="special"/><text x="220" y="208" text-anchor="middle" class="label">沿通道 concat，通道持续增长</text><text x="220" y="228" text-anchor="middle" class="small">Transition 用 1×1 + Pool 压缩</text>
+    <line x1="220" y1="236" x2="220" y2="256" class="arrow"/>
+    <rect x="65" y="256" width="310" height="48" rx="8" class="head"/><text x="220" y="276" text-anchor="middle" class="label">Dense stage × 多组 → GAP</text><text x="220" y="296" text-anchor="middle" class="small">特征复用强，但激活内存可能高</text>
+    <line x1="220" y1="304" x2="220" y2="324" class="arrow"/>
+    <rect x="110" y="324" width="220" height="40" rx="8" class="out"/><text x="220" y="350" text-anchor="middle" class="label">类别 logits：N×K</text>
+    <text x="220" y="402" text-anchor="middle" class="key">关键：保留旧特征并沿通道拼接</text>
+  </g>
+</svg>

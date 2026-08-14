@@ -389,10 +389,10 @@ flowchart LR
 设备一致性可写成一个简单约束：
 
 $$
-\operatorname{device}(\mathbf X)
-=\operatorname{device}(\mathbf y)
-=\operatorname{device}(\theta)
-=\operatorname{device}(\text{buffers}).
+\mathrm{device}(\mathbf X)
+=\mathrm{device}(\mathbf y)
+=\mathrm{device}(\theta)
+=\mathrm{device}(\text{buffers}).
 $$
 
 ### 为什么 GPU 计时容易骗人

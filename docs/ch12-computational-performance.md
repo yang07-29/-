@@ -110,8 +110,8 @@ flowchart LR
 设 `X:(B,D)`，两层 MLP 为：
 
 $$
-H=\operatorname{ReLU}(XW_1+b_1),\qquad
-Y=\operatorname{ReLU}(HW_2+b_2).
+H=\mathrm{ReLU}(XW_1+b_1),\qquad
+Y=\mathrm{ReLU}(HW_2+b_2).
 $$
 
 其中 $W_1:(D,2D)$、$H:(B,2D)$、$W_2:(2D,D)$、$Y:(B,D)$。eager 与 compiled 应计算同一函数，因此先检查输出误差，再比较速度。
@@ -149,7 +149,7 @@ torch.testing.assert_close(y_eager, y_compiled)
 
 ### 新手例子：两个执行方式为什么输出相同
 
-- **问题/小输入**：$f(x)=\operatorname{ReLU}(2x+1)$，输入 `x=[-1,2]`。
+- **问题/小输入**：$f(x)=\mathrm{ReLU}(2x+1)$，输入 `x=[-1,2]`。
 - **逐步过程**：先乘 2 得 `[-2,4]`；再加 1 得 `[-1,5]`；ReLU 把负数截为 0。
 - **具体输出**：eager 和 compiled 都应得到 `[0,5]`。
 - **说明什么**：编译改变“怎样执行”，不该改变“算什么”。

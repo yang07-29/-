@@ -110,7 +110,7 @@ flowchart LR
 注意力汇聚的一般形式是：
 
 $$
-\operatorname{Attention}(q,K,V)
+\mathrm{Attention}(q,K,V)
 =\sum_{i=1}^{K}\alpha(q,k_i)v_i,
 \qquad
 \alpha(q,k_i)\ge 0,
@@ -171,7 +171,7 @@ $$
 
 $$
 \alpha(x,x_i)
-=\operatorname{softmax}\left(-\frac{(x-x_i)^2}{2h^2}\right)_i.
+=\mathrm{softmax}\left(-\frac{(x-x_i)^2}{2h^2}\right)_i.
 $$
 
 $h$ 是带宽：小 $h$ 更信附近少数点，曲线灵活但可能抖；大 $h$ 会平均更远的点，曲线平滑但可能欠拟合。
@@ -194,7 +194,7 @@ $h$ 是带宽：小 $h$ 更信附近少数点，曲线灵活但可能抖；大 $
 
 $$
 \alpha(x,x_i)=
-\operatorname{softmax}
+\mathrm{softmax}
 \left(-\frac{1}{2}((x-x_i)w)^2\right)_i.
 $$
 
@@ -272,8 +272,8 @@ $$
 $$
 a(q,k)=\frac{q^\top k}{\sqrt d},
 \qquad
-\operatorname{Attention}(Q,K,V)
-=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt d}\right)V.
+\mathrm{Attention}(Q,K,V)
+=\mathrm{softmax}\left(\frac{QK^\top}{\sqrt d}\right)V.
 $$
 
 不缩放时，如果各分量方差约为 1，点积方差会随 $d$ 增大。大绝对值分数让 softmax 很尖，非最大位置梯度接近 0。除以 $\sqrt d$ 把尺度拉回更稳定范围。
@@ -316,7 +316,7 @@ e_{ti}=v^\top\tanh(W_s s_{t-1}+W_hh_i),
 $$
 
 $$
-\alpha_{ti}=\operatorname{softmax}_i(e_{ti}),
+\alpha_{ti}=\mathrm{softmax}_i(e_{ti}),
 \qquad
 c_t=\sum_i\alpha_{ti}h_i.
 $$
@@ -386,13 +386,13 @@ next_state = gru_cell(context, decoder_state)
 对第 $h$ 个头：
 
 $$
-\operatorname{head}_h
-=\operatorname{Attention}(QW_h^Q,KW_h^K,VW_h^V),
+\mathrm{head}_h
+=\mathrm{Attention}(QW_h^Q,KW_h^K,VW_h^V),
 $$
 
 $$
-\operatorname{MHA}(Q,K,V)
-=\operatorname{Concat}(\operatorname{head}_1,\ldots,\operatorname{head}_H)W^O.
+\mathrm{MHA}(Q,K,V)
+=\mathrm{Concat}(\mathrm{head}_1,\ldots,\mathrm{head}_H)W^O.
 $$
 
 若模型宽度 $D=8$、头数 $H=2$，每头宽度 $d_h=4$。必须满足 $D\bmod H=0$。
@@ -468,7 +468,7 @@ $$
 不同维度使用不同频率。输入变为：
 
 $$
-X_{in}=\operatorname{Embedding}(tokens)\sqrt D+P.
+X_{in}=\mathrm{Embedding}(tokens)\sqrt D+P.
 $$
 
 `P:(1,T,D)` 沿 batch 广播，不需要为每个样本复制一份。
@@ -507,7 +507,7 @@ Transformer 把多头注意力、逐位置前馈网络、残差连接、层规�
 ### 逐位置前馈网络（Position-wise FFN）
 
 $$
-\operatorname{FFN}(x)=W_2\,\sigma(W_1x+b_1)+b_2.
+\mathrm{FFN}(x)=W_2\,\sigma(W_1x+b_1)+b_2.
 $$
 
 它对每个 token 独立使用**同一组参数**。输入 `(B,T,D)`，中间通常 `(B,T,D_ff)`，再回到 `(B,T,D)`。FFN 负责特征维内的非线性变换；跨 token 的信息混合已由注意力完成。
@@ -517,13 +517,13 @@ $$
 AddNorm 的共同要求是子层输出与残差输入 Shape 相同：
 
 $$
-Y=\operatorname{LayerNorm}(X+\operatorname{Sublayer}(X)).
+Y=\mathrm{LayerNorm}(X+\mathrm{Sublayer}(X)).
 $$
 
 教材常用 post-LN 表达；现代实现也常见 pre-LN：
 
 $$
-Y=X+\operatorname{Sublayer}(\operatorname{LayerNorm}(X)).
+Y=X+\mathrm{Sublayer}(\mathrm{LayerNorm}(X)).
 $$
 
 两者不是只换一行的完全等价模型。阅读代码时先看 LayerNorm 在子层前还是后。LayerNorm 在每个样本、每个 token 的最后特征维上规范化，不依赖 batch 统计，适合变长序列。
@@ -729,8 +729,8 @@ python code/ch10/transformer_copy_task.py --epochs 25 --steps-per-epoch 40
 
 $$
 s=q^\top k=\sum_{i=1}^{d}q_i k_i,
-\qquad \operatorname{Var}(s)\approx d,
-\qquad \operatorname{Std}(s)\approx\sqrt d.
+\qquad \mathrm{Var}(s)\approx d,
+\qquad \mathrm{Std}(s)\approx\sqrt d.
 $$
 
 所以 $s/\sqrt d$ 的方差约为 1。若改成 $s/d$，方差约为 $1/d$、标准差约为 $1/\sqrt d$；$d$ 越大，所有 logits 越挤在 0 附近，softmax 越接近平均分配。
