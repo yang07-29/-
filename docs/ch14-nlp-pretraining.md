@@ -2,13 +2,65 @@
 
 > 复习定位：先让模型从无标签文本中学会“词与上下文怎样相处”，再把这种表示交给下游任务<br>
 > 内容脉络：14.1–14.10 · PyTorch · 离线可运行 · 原创转述<br>
-> 章节顺序与小节名称参考[《动手学深度学习》中文 2.0 官方目录](https://zh.d2l.ai/chapter_natural-language-processing-pretraining/index.html)
+> 章节顺序与小节名称参考[《动手学深度学习》中文 2.0 官方目录](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/index.html)
 
 [Skip-Gram + 负采样](../code/ch14/word2vec_skipgram.py) · [GloVe、BPE 与类比](../code/ch14/glove_bpe_analogy.py) · [微型 BERT 预训练](../code/ch14/mini_bert_pretraining.py) · [Hot100 #208 Trie](../code/ch14/hot100_trie.py)
 
 ## 一句话主线
 
 **预训练把文本自己变成监督信号：word2vec 从局部共现学习静态词向量，GloVe 拟合全局共现统计，fastText/BPE 让表示能复用子词，而 BERT 用双向 Transformer 同时做掩蔽词元预测和句子关系预测，得到会随上下文变化的表示。**
+
+## 三个月后复习入口
+
+| 场景 | 先看什么 | 达标标准 |
+| --- | --- | --- |
+| 新手第一次学 | one-hot 局限 → word2vec → 负采样 → 子词 → BERT | 能说出监督信号怎样从文本自己产生 |
+| 90 天后复习 | 静态/上下文表示表 → BPE 例子 → MLM 数据流 | 能恢复从局部共现到双向预训练的演进 |
+| 面试前复习 | Skip-Gram/CBOW、负采样、GloVe、BPE、MLM/NSP | 能解释目标函数、Shape、采样偏差与训练推理差异 |
+
+**最小记忆集：**
+
+1. one-hot 只表示身份，词嵌入让相似上下文的词在向量空间靠近；
+2. Skip-Gram 用中心预测上下文，CBOW 反过来；负采样避免全词表 Softmax；
+3. GloVe 使用全局共现统计，word2vec 更直接使用局部窗口样本；
+4. BPE 用高频片段组合开放词汇，词表大小与序列长度互相权衡；
+5. BERT 的 MLM 用左右上下文预测被选位置，表示随句子变化。
+
+### 专有名词白话表
+
+| 术语 | 白话解释 | 训练信号 |
+| --- | --- | --- |
+| 词元（token） | 文本切分后交给模型的编号单位 | 字符、词、子词 |
+| 词嵌入（embedding） | 用短的稠密向量代替巨大的 one-hot 身份表 | `Embedding` |
+| 上下文窗口 | 中心词附近拿来预测或被预测的词 | 距离范围 |
+| 负采样 | 不算全部词，只抽少量错误候选做二分类 | 正/负词对 |
+| 共现矩阵 | 统计词与词在语料中一起出现多少次 | GloVe 输入 |
+| 子词（subword） | 比完整词小、比单字符更可复用的片段 | BPE |
+| MLM | 遮住部分 token，让模型根据左右上下文猜回去 | masked labels |
+| 预训练 | 先在大量通用数据学习表示，再交给下游任务 | checkpoint |
+
+### 教材高价值问答
+
+<details>
+<summary>【表示】word2vec 和 BERT 都输出向量，为什么一个叫静态、一个叫上下文表示？</summary>
+
+word2vec 通常为每个词表项保存一条固定向量，同一个词在不同句子中查到相同结果；BERT 让 token 经过多层双向注意力，输出取决于整句上下文，同一个词可有不同表示。静态向量便宜易用，上下文表示更能处理多义词，但计算更重。
+
+</details>
+
+<details>
+<summary>【近似】负采样为什么能省计算，它还是原来的全词表 Softmax 吗？</summary>
+
+它把每个正词对对整个词表归一化，改成区分一个真实上下文和少量采样噪声的二分类目标，计算只与负样本数相关。它有相近的表示学习目的，但不是精确计算原 Softmax；采样分布、负样本数量和排除正例都会影响结果。
+
+</details>
+
+<details>
+<summary>【分词】BPE 词表越大是不是一定越好？</summary>
+
+词表大时常见词可用更长片段表示，序列较短，但嵌入和输出层更大、罕见片段样本更少；词表小时参数省，却把句子切得更长，增加序列计算。它是模型容量、序列长度和覆盖能力的权衡，训练与部署还必须使用完全相同的词表与规则。
+
+</details>
 
 ## 本章地图
 

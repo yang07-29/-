@@ -8,6 +8,57 @@
 
 一个可用的深度学习模型不只是 `forward` 公式，而是“模块结构 + 参数与 buffer + 运行模式 + 设备 + 可恢复状态”的整体；第五章就是把这些零散对象组织成能训练、能迁移、能保存、能复现的工程系统。
 
+## 三个月后复习入口
+
+| 场景 | 先看什么 | 达标标准 |
+| --- | --- | --- |
+| 新手第一次学 | Module 注册树 → Parameter/buffer → state_dict → device | 能说出“挂在 self 上”为什么有时仍不够 |
+| 90 天后复习 | 六问排错法 → checkpoint 恢复链 → 完整代码 | 能在新进程恢复并验证同一预测 |
+| 面试前复习 | `model(x)` 调用链、参数共享、冻结、Lazy、strict 加载 | 能说清对象是否被注册、保存、迁移和优化 |
+
+**最小记忆集：**
+
+1. `nn.Module` 的核心是注册树，框架靠它找到子层、参数和 buffer；
+2. Parameter 会被优化器发现，buffer 会保存和迁移但通常不求梯度，普通 Tensor 属性两者都不保证；
+3. `state_dict` 保存状态，不保存完整 Python 代码结构；
+4. 无缝续训还需优化器、调度器、进度和随机状态；
+5. 输入、模型和损失相关 Tensor 必须在兼容 device/dtype 上。
+
+### 专有名词白话表
+
+| 术语 | 白话解释 | 常见代码 |
+| --- | --- | --- |
+| Module | 能登记子层和状态、支持整体保存迁移的模型积木 | `class Net(nn.Module)` |
+| Parameter | 希望反向传播求梯度、交给优化器更新的 Tensor | `nn.Parameter` |
+| buffer | 不训练但属于模型状态、要随模型保存和迁移的 Tensor | `register_buffer` |
+| 注册（registration） | 让 Module 知道“这个对象属于我”，之后递归管理 | `self.layer=...`、`ModuleList` |
+| state_dict | 从名字到参数/buffer Tensor 的状态字典 | `model.state_dict()` |
+| checkpoint | 为推理或续训保存的一组恢复材料 | 模型、优化器、epoch、配置 |
+| device | Tensor 实际存放和计算的位置 | CPU、CUDA、MPS |
+
+### 教材高价值问答
+
+<details>
+<summary>【调用链】为什么推荐写 `model(x)`，而不是直接写 `model.forward(x)`？</summary>
+
+`model(x)` 先进入 `nn.Module.__call__`，框架才能处理 hooks、包装器和其他模块机制，然后再调用 forward。直接调用 forward 可能绕开这些行为。定义模型时仍要实现 forward，但使用模型时应走标准入口；若调试 hook 不触发，直接调用 `.forward()` 是优先检查项。
+
+</details>
+
+<details>
+<summary>【保存】为什么一般推荐保存 `state_dict`，但它又不足以无缝续训？</summary>
+
+`state_dict` 与具体文件代码解耦，更容易检查键名和跨版本迁移，适合恢复模型参数；但优化器动量、学习率调度、混合精度 scaler、epoch 和随机状态不在模型 state_dict 中。推理恢复通常只需模型状态，严格续训则要把整套训练状态一起保存并实际加载验证。
+
+</details>
+
+<details>
+<summary>【状态】BatchNorm 的 running mean 为什么是 buffer，而不是 Parameter 或普通 Tensor？</summary>
+
+它是训练过程中更新、推理时需要的持久状态，但不是由优化器根据梯度学习的参数，因此适合 buffer。注册为 buffer 后会进入 `state_dict` 并随 `model.to(device)` 迁移；若只是普通 Tensor 属性，可能留在 CPU 或在保存时丢失。
+
+</details>
+
 ## 章节地图
 
 ```mermaid

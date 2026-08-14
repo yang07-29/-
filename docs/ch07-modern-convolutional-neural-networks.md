@@ -2,11 +2,27 @@
 
 > 章节定位：D2L 2.0 第 7 章 · PyTorch · 重点不是背网络，而是看懂每次架构改动解决了什么
 
-[六类现代 CNN 完整代码](../code/ch07/modern_cnn_blocks.py) · [NiN 与 VGG 分类头对比代码](../code/ch07/nin_vs_vgg_head_demo.py) · [官方章节目录](https://zh.d2l.ai/chapter_convolutional-modern/index.html)
+[六类现代 CNN 完整代码](../code/ch07/modern_cnn_blocks.py) · [NiN 与 VGG 分类头对比代码](../code/ch07/nin_vs_vgg_head_demo.py) · [官方章节目录](https://zh-v2.d2l.ai/chapter_convolutional-modern/index.html)
 
 ## 一句话主线
 
 现代 CNN 的演进不是不断堆层数，而是在回答四个问题：怎样稳定地训练更深网络、怎样用更少参数表达更多模式、怎样同时看不同尺度，以及怎样让早期信息和梯度顺畅流到后面。
+
+## 三个月后复习入口
+
+| 场景 | 先看什么 | 达标标准 |
+| --- | --- | --- |
+| 新手第一次学 | 白话术语表 → 架构时间线 → 每节小例子 | 能把每个模型名翻译成“它主要解决了什么” |
+| 90 天后复习 | AlexNet/VGG/NiN 对比 → Inception 图 → BN/ResNet/DenseNet | 能用 10 分钟恢复现代 CNN 演进主线 |
+| 面试前复习 | 小核、GAP、1×1 瓶颈、BN 模式、残差导数、cat/add | 能推导参数量、输出 Shape 和梯度路径 |
+
+**最小记忆集：**
+
+1. VGG 用重复的小卷积块把网络设计规则化，并用多层小核逐步扩大感受野；
+2. NiN 用逐位置 `1×1` 非线性重组通道，再以 GAP 代替参数巨大的全连接分类头；
+3. Inception 让同一输入并行经过不同尺度，再沿通道拼接；
+4. BN 训练时用当前批统计量，推理时用累计统计量，模式切换不能漏；
+5. ResNet 用相加保留短路径，DenseNet 用拼接保留旧特征：一个要求通道对齐，一个会让通道增长。
 
 ## 先把本章专有名词翻译成白话
 
@@ -258,7 +274,7 @@ $$
 
 ### 李沐课程经典问答：先自己说，再展开
 
-以下问题根据[官方 NiN 章节与练习](https://zh.d2l.ai/chapter_convolutional-modern/nin.html)以及课程中反复强调的结构问题重新组织为原创回答，不是字幕抄写。
+以下问题根据[官方 NiN 章节与练习](https://zh-v2.d2l.ai/chapter_convolutional-modern/nin.html)以及课程中反复强调的结构问题重新组织为原创回答，不是字幕抄写。
 
 <details>
 <summary>1. 为什么 NiN 块在普通卷积后面连续放两个 `1×1` 卷积？</summary>
