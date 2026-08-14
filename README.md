@@ -31,7 +31,7 @@
 
 [打开 24 题章节—算法学习目标总表](docs/leetcode-hot100-learning-map.md) · [打开本次新增 16 题完整解析](docs/leetcode-hot100-expanded-practice.md)
 
-主动回忆与面试八股已按章全量审阅；题量从 282 增至 325，并采用“结论、机制、工程影响、误区、追问”的深答标准。[查看审阅记录与各章新增题数](docs/active-recall-interview-audit.md)
+主动回忆、课程经典问答与面试八股已按章全量审阅；题量从 282 增至 333，并采用“结论、机制、工程影响、误区、追问”的深答标准。[查看审阅记录与各章新增题数](docs/active-recall-interview-audit.md)
 
 ## 阅读方式
 
